@@ -1,7 +1,10 @@
-package ua.com.foxminded.sql_jdbc_school;
+package ua.com.foxminded;
 
 public class Main {
+
     public static void main(String[] args) {
 
+
     }
+
 }
