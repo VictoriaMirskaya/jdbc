@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-public class ScriptTablesCreator implements TablesCreator {
+public class SQLTablesCreator implements TablesCreator {
 
     private static String url = "jdbc:postgresql://localhost:5432/school";
     private static String user = "postgres";
