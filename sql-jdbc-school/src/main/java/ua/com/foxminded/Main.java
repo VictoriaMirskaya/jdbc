@@ -1,5 +1,7 @@
 package ua.com.foxminded;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import ua.com.foxminded.dao.SQLTablesCreator;
 import ua.com.foxminded.dao.TestDataCreator;
 import ua.com.foxminded.ui.ConsoleMenu;
@@ -7,12 +9,18 @@ import ua.com.foxminded.ui.ConsoleMenu;
 public class Main {
 
     public static void main(String[] args) {
-	createTables();
-	generateTestData();
-	showConsoleMenu();
+	try {
+	    createTables();
+	    generateTestData();
+	    showConsoleMenu();
+	} catch (IOException | SQLException e) {
+	    System.err.println(e.getMessage());
+	} catch (RuntimeException e) {
+	    System.err.println(UserMessages.SYSTEM_ERROR);
+	}
     }
 
-    private static void createTables() {
+    private static void createTables() throws IOException, SQLException {
 	new SQLTablesCreator().createTables();
     }
 
