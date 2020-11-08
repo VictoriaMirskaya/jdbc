@@ -3,7 +3,7 @@ package ua.com.foxminded;
 import java.io.IOException;
 import java.sql.SQLException;
 import ua.com.foxminded.dao.SQLTablesCreator;
-import ua.com.foxminded.dao.TestDataCreator;
+import ua.com.foxminded.dao.TestDataGenerator;
 import ua.com.foxminded.ui.ConsoleMenu;
 
 public class Main {
@@ -25,7 +25,7 @@ public class Main {
     }
 
     private static void generateTestData() {
-	new TestDataCreator().createTestData();
+	new TestDataGenerator().createTestData();
     }
 
     private static void showConsoleMenu() {
