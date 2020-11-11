@@ -10,18 +10,16 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import ua.com.foxminded.AuthorizationData;
 import ua.com.foxminded.UserMessages;
 
 public class SQLTablesCreator implements TablesCreator {
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/school";
-    private static final String USER = "postgres";
-    private static final String PASSWORD = "310589";
     private static final String FILE_SCRIPT_NAME = "CreateTablesScript.sql";
     
     @Override
     public void createTables() throws IOException, SQLException {
-	try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+	try (Connection connection = DriverManager.getConnection(AuthorizationData.URL, AuthorizationData.USER, AuthorizationData.PASSWORD);
 		BufferedReader sqlFile = Files.newBufferedReader(producePath(FILE_SCRIPT_NAME));
 		Statement statement = connection.createStatement()) {
 	    String line = null;

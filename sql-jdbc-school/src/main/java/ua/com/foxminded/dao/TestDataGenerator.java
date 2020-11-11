@@ -1,5 +1,8 @@
 package ua.com.foxminded.dao;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import ua.com.foxminded.domain.Course;
 import ua.com.foxminded.domain.Group;
@@ -7,18 +10,49 @@ import ua.com.foxminded.domain.Student;
 
 public class TestDataGenerator {
     
-    public void createTestData() {
-//	DataReader dataReader = new FilesDataReader();
-//	List<Student> students = dataReader.loadStudents();
-//	List<Group> groups = dataReader.loadGroups();
-//	List<Course> courses = dataReader.loadCourses();
-//	createGroupsData(groups);
-//	createCoursesData(courses);
-//	createStudentsData(students, groups);
-//	assignStudentsToCourses(students, courses);
+    public static void generateTestData() {
+	generateGroups();
+	generateCourses();
+	generateStudents();
+	assignStudentsToCourses();
     }
 
-    private enum GroupTestData{
+    private static void generateGroups() {
+	for (GroupNames groupName : Arrays.asList(GroupNames.values())) {
+	    new GroupDao().save(new Group(groupName.getTitle()));
+	}
+    }
+
+    private static void generateCourses() {
+	for (CourseNames courseName : Arrays.asList(CourseNames.values())) {
+	    new CourseDao().save(new Course(courseName.getTitle()));
+	}
+    }
+    
+    private static void generateStudents(){
+	List<FirstNames> firstNamesExamples = Arrays.asList(FirstNames.values());	
+	List<FirstNames> firstNames = new ArrayList<>();
+	for(int i = 0; i < 10; i++) {
+	    Collections.shuffle(firstNamesExamples);
+	    firstNames.addAll(firstNamesExamples);
+	}
+	List<LastNames> lastNamesExamples = Arrays.asList(LastNames.values());	
+	List<LastNames> lastNames = new ArrayList<>();
+	for(int i = 0; i < 10; i++) {
+	    Collections.shuffle(lastNamesExamples);
+	    lastNames.addAll(lastNamesExamples);
+	}
+	List<Student> students = new ArrayList<>();
+	
+//	* 200 students. Take 20 first names and 20 last names and randomly combine them to generate students.
+//	* Randomly assign students to groups. Each group could contain from 10 to 30 students. It is possible that some groups will be without students or students without groups
+    }
+
+    private static void assignStudentsToCourses() {
+//	* Create relation MANY-TO-MANY between tables STUDENTS and COURSES. Randomly assign from 1 to 3 courses for each student	
+    }
+    
+    private enum GroupNames{
 	
 	MO15 ("MO-15"),
 	M020 ("MO-20"),
@@ -33,23 +67,16 @@ public class TestDataGenerator {
 	
 	private String title;
 
-	GroupTestData(String title) {
-	       this.title = title;
-	   }
+	GroupNames(String title) {
+	    this.title = title;
+	}
 
-	   public String getTitle() {
-	       return title;
-	   }
-
-	   @Override
-	   public String toString() {
-	       return "Group{" +
-	               "title='" + title + '\'' +
-	               '}';
-	   }
+	public String getTitle() {
+	    return title;
+	}
     }
     
-    private enum CourseTestData{
+    private enum CourseNames{
 	
 	MATHEMATICS ("Mathematics"),
 	BIOLOGY ("Biology"),
@@ -64,23 +91,17 @@ public class TestDataGenerator {
 	
 	private String title;
 
-	CourseTestData(String title) {
-	       this.title = title;
-	   }
+	CourseNames(String title) {
+	    this.title = title;
+	}
 
-	   public String getTitle() {
-	       return title;
-	   }
+	public String getTitle() {
+	    return title;
+	}
 
-	   @Override
-	   public String toString() {
-	       return "Course{" +
-	               "title='" + title + '\'' +
-	               '}';
-	   }
     }
     
-    private enum FirstNameTestData{
+    private enum FirstNames{
 	
 	ADAM ("Adam"),
 	FELIX ("Felix"),
@@ -105,23 +126,17 @@ public class TestDataGenerator {
 	
 	private String title;
 
-	FirstNameTestData(String title) {
-	       this.title = title;
-	   }
+	FirstNames(String title) {
+	    this.title = title;
+	}
 
-	   public String getTitle() {
-	       return title;
-	   }
+	public String getTitle() {
+	    return title;
+	}
 
-	   @Override
-	   public String toString() {
-	       return "First name{" +
-	               "title='" + title + '\'' +
-	               '}';
-	   }
     }
     
-    private enum LastNameTestData{
+    private enum LastNames{
 	
 	ANDERSON ("Anderson"),
 	BROOKS ("Brooks"),
@@ -146,37 +161,13 @@ public class TestDataGenerator {
 	
 	private String title;
 
-	LastNameTestData(String title) {
-	       this.title = title;
-	   }
+	LastNames(String title) {
+	    this.title = title;
+	}
 
-	   public String getTitle() {
-	       return title;
-	   }
-
-	   @Override
-	   public String toString() {
-	       return "First name{" +
-	               "title='" + title + '\'' +
-	               '}';
-	   }
-    }
-    
-    private void createGroupsData(List<Group> groups) {
-//	* 10 groups with randomly generated names. The name should contain 2 characters, hyphen, 2 numbers
-    }
-
-    private void createCoursesData(List<Course> courses) {
-//	* Create 10 courses (math, biology, etc)	
-    }
-
-    private void createStudentsData(List<Student> students, List<Group> groups) {
-//	* 200 students. Take 20 first names and 20 last names and randomly combine them to generate students.
-//	* Randomly assign students to groups. Each group could contain from 10 to 30 students. It is possible that some groups will be without students or students without groups	
-    }
-
-    private void assignStudentsToCourses(List<Student> students, List<Course> courses) {
-//	* Create relation MANY-TO-MANY between tables STUDENTS and COURSES. Randomly assign from 1 to 3 courses for each student	
+	public String getTitle() {
+	    return title;
+	}
     }
 
 }

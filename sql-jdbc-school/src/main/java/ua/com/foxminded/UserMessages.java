@@ -10,6 +10,5 @@ public final class UserMessages {
     public static final String RESULT_DATA_NOT_EXIST = "Result data does not exist.";
     public static final String ERROR_GET_PATH = "There's been a error while get path to file.";
 
-    private UserMessages() {
-    }
+    private UserMessages() {}
 }

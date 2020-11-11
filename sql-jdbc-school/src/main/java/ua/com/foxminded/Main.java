@@ -17,6 +17,7 @@ public class Main {
 	    System.err.println(e.getMessage());
 	} catch (RuntimeException e) {
 	    System.err.println(UserMessages.SYSTEM_ERROR);
+	    e.printStackTrace();
 	}
     }
 
@@ -25,7 +26,7 @@ public class Main {
     }
 
     private static void generateTestData() {
-	new TestDataGenerator().createTestData();
+	TestDataGenerator.generateTestData();
     }
 
     private static void showConsoleMenu() {
