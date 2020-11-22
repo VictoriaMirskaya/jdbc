@@ -6,12 +6,13 @@ public class Course {
     private String name;
     private String description;
 
-    public Course(String name) {
+    public Course(int id, String name) {
+	this.id = id;
 	this.name = name;
     }
     
-    public Course(String name, String description) {
-	this(name);
+    public Course(int id, String name, String description) {
+	this(id, name);
 	this.description = description;
     }
 

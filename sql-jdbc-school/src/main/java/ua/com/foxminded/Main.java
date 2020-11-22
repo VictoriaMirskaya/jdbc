@@ -6,6 +6,7 @@ import ua.com.foxminded.dao.CourseDao;
 import ua.com.foxminded.dao.Dao;
 import ua.com.foxminded.dao.GroupDao;
 import ua.com.foxminded.dao.SQLTablesCreator;
+import ua.com.foxminded.dao.StudentCourseDao;
 import ua.com.foxminded.dao.StudentDao;
 import ua.com.foxminded.dao.TestDataGenerator;
 import ua.com.foxminded.domain.Course;
@@ -25,6 +26,7 @@ public class Main {
 	courseDao = new CourseDao();
 	groupDao = new GroupDao();
 	studentDao = new StudentDao();
+	studentCourseDao = new StudentCourseDao();
 	try {
 	    new SQLTablesCreator().createTables();
 	    new TestDataGenerator().generateTestData(courseDao, groupDao, studentDao, studentCourseDao);
