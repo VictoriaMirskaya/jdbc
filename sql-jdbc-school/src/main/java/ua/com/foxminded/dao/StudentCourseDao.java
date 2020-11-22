@@ -7,43 +7,43 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import ua.com.foxminded.AuthorizationData;
-import ua.com.foxminded.domain.Group;
+import ua.com.foxminded.domain.StudentCourse;
 
-public class GroupDao implements Dao<Group> {
+public class StudentCourseDao implements Dao<StudentCourse> {
 
     @Override
-    public Optional<Group> get(long id) {
-
+    public Optional<StudentCourse> get(long id) {
 	return null;
     }
 
     @Override
-    public List<Group> getAll() {
-
+    public List<StudentCourse> getAll() {
 	return null;
     }
 
     @Override
-    public void saveElement(Group t) {
-	String sql = "INSERT INTO groups (group_name) VALUES (?)";
+    public void saveElement(StudentCourse sc) {
+	String sql = "INSERT INTO students_courses (course_id, student_id) VALUES (?, ?)";
 	try (Connection connection = DriverManager.getConnection(AuthorizationData.URL, AuthorizationData.USER,
 		AuthorizationData.PASSWORD); PreparedStatement statement = connection.prepareStatement(sql)) {
-	    statement.setString(1, t.getName());
+	    statement.setInt(1, sc.getCourseId());
+	    statement.setInt(2, sc.getStudentId());
 	    statement.executeUpdate();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
     }
-    
+
     @Override
-    public void saveList(List<Group> t) {
-	String sql = "INSERT INTO groups (group_name) VALUES (?)";
+    public void saveList(List<StudentCourse> sc) {
+	String sql = "INSERT INTO students_courses (course_id, student_id) VALUES (?, ?)";
 	try (Connection connection = DriverManager.getConnection(AuthorizationData.URL, AuthorizationData.USER,
 		AuthorizationData.PASSWORD); PreparedStatement statement = connection.prepareStatement(sql)) {
-	    for (Group group : t) {
-		statement.setString(1, group.getName());
+	    for (StudentCourse studentCourse : sc) {
+		statement.setInt(1, studentCourse.getCourseId());
+		statement.setInt(2, studentCourse.getStudentId());
 		statement.addBatch();
-	    }
+	    }	    
 	    statement.executeBatch();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -51,13 +51,13 @@ public class GroupDao implements Dao<Group> {
     }
 
     @Override
-    public void update(Group t, String[] params) {
-
+    public void update(StudentCourse t, String[] params) {
+	
     }
 
     @Override
-    public void delete(Group t) {
-
+    public void delete(StudentCourse t) {
+	
     }
 
 }

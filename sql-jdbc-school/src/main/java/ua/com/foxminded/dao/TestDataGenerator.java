@@ -4,52 +4,104 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import ua.com.foxminded.domain.Course;
 import ua.com.foxminded.domain.Group;
 import ua.com.foxminded.domain.Student;
+import ua.com.foxminded.domain.StudentCourse;
 
 public class TestDataGenerator {
     
-    public static void generateTestData() {
-	generateGroups();
-	generateCourses();
-	generateStudents();
-	assignStudentsToCourses();
+    private final Random random = new Random();
+      
+    public void generateTestData(Dao<Course> courseDao, Dao<Group> groupDao, Dao<Student> studentDao, Dao<StudentCourse> studentCourseDao) {
+	List<Group> groups = generateGroups(groupDao);
+	List<Course> courses = generateCourses(courseDao);
+	List<Student> students = generateStudents(studentDao, groups);
+	assignStudentsToCourses(studentCourseDao, students, courses);
     }
 
-    private static void generateGroups() {
+    private List<Group> generateGroups(Dao<Group> groupDao) {
+	List<Group> groups = new ArrayList<>();
 	for (GroupNames groupName : Arrays.asList(GroupNames.values())) {
-	    new GroupDao().save(new Group(groupName.getTitle()));
+	    groups.add(new Group(groupName.getTitle()));
 	}
+	groupDao.saveList(groups);
+	return groups;
     }
 
-    private static void generateCourses() {
+    private List<Course> generateCourses(Dao<Course> courseDao) {
+	List<Course> courses = new ArrayList<>();
 	for (CourseNames courseName : Arrays.asList(CourseNames.values())) {
-	    new CourseDao().save(new Course(courseName.getTitle()));
+	    courses.add(new Course(courseName.getTitle()));
 	}
+	courseDao.saveList(courses);
+	return courses;
     }
     
-    private static void generateStudents(){
-	List<FirstNames> firstNamesExamples = Arrays.asList(FirstNames.values());	
+    private List<Student> generateStudents(Dao<Student> studentDao, List<Group> groups){
+	List<Student> students = createStudents();
+	assignStudentsToGroup(students, groups);
+	studentDao.saveList(students);
+	return students;
+    }
+    
+    private List<Student> createStudents() {
 	List<FirstNames> firstNames = new ArrayList<>();
-	for(int i = 0; i < 10; i++) {
-	    Collections.shuffle(firstNamesExamples);
-	    firstNames.addAll(firstNamesExamples);
+	for(int i = 0; i < 10; i++) {	    
+	    firstNames.addAll(Arrays.asList(FirstNames.values()));
 	}
-	List<LastNames> lastNamesExamples = Arrays.asList(LastNames.values());	
 	List<LastNames> lastNames = new ArrayList<>();
 	for(int i = 0; i < 10; i++) {
-	    Collections.shuffle(lastNamesExamples);
-	    lastNames.addAll(lastNamesExamples);
+	    lastNames.addAll(Arrays.asList(LastNames.values()));
 	}
+	Collections.shuffle(firstNames);
+	Collections.shuffle(lastNames);
 	List<Student> students = new ArrayList<>();
-	
-//	* 200 students. Take 20 first names and 20 last names and randomly combine them to generate students.
-//	* Randomly assign students to groups. Each group could contain from 10 to 30 students. It is possible that some groups will be without students or students without groups
+	for(int i = 0; i < 200; i++) {
+	    students.add(new Student(firstNames.get(i).getTitle(), lastNames.get(i).getTitle()));
+	}
+	return students;
+    }
+    
+    private void assignStudentsToGroup(List<Student> students, List<Group> groups) {
+	int capasity = calculateGroupCapasity();
+	int fullness = 0;
+	int index = 0;
+	for (Student student : students) {
+	    if(fullness > capasity) {
+		index++; 
+		if(index > 9) {
+		    break;
+		}
+		capasity = calculateGroupCapasity();
+	    }
+	    student.setGroup(groups.get(index));
+	}
     }
 
-    private static void assignStudentsToCourses() {
-//	* Create relation MANY-TO-MANY between tables STUDENTS and COURSES. Randomly assign from 1 to 3 courses for each student	
+    private void assignStudentsToCourses(Dao<StudentCourse> studentCourseDao, List<Student> students, List<Course> courses) {
+	int courseQuantity;
+	List<StudentCourse> studentCourse = new ArrayList<>();
+	for (Student student : students) {
+	    courseQuantity = calculateCourseQuantity();
+	    for(int i = 1; i <= courseQuantity; i ++) {
+		studentCourse.add(new StudentCourse(courses.get(generateRandomCourseIndex()).getId(), student.getId()));
+	    }
+	}
+	studentCourseDao.saveList(studentCourse);
+    }
+
+    private int calculateGroupCapasity() {
+	return random.nextInt(21) + 10;
+    }
+    
+    private int calculateCourseQuantity() {
+	return random.nextInt(3) + 1;
+    }
+    
+    private int generateRandomCourseIndex() {
+	return random.nextInt(10);
     }
     
     private enum GroupNames{

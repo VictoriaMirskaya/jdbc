@@ -1,10 +1,15 @@
 package ua.com.foxminded.ui;
 
 import java.util.Scanner;
+import ua.com.foxminded.dao.Dao;
+import ua.com.foxminded.domain.Course;
+import ua.com.foxminded.domain.Group;
+import ua.com.foxminded.domain.Student;
+import ua.com.foxminded.domain.StudentCourse;
 
 public class ConsoleMenu {
 
-    public void show() {
+    public void show(Dao<Course> courseDao, Dao<Group> groupDao, Dao<Student> studentDao, Dao<StudentCourse> studentCourseDao) {
 	try (Scanner scanner = new Scanner(System.in)) {
 	    boolean quitApplication = false;
 	    do {

@@ -7,28 +7,30 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import ua.com.foxminded.AuthorizationData;
-import ua.com.foxminded.domain.Group;
+import ua.com.foxminded.domain.Student;
 
-public class GroupDao implements Dao<Group> {
+public class StudentDao implements Dao<Student> {
 
     @Override
-    public Optional<Group> get(long id) {
+    public Optional<Student> get(long id) {
 
 	return null;
     }
 
     @Override
-    public List<Group> getAll() {
+    public List<Student> getAll() {
 
 	return null;
     }
 
     @Override
-    public void saveElement(Group t) {
-	String sql = "INSERT INTO groups (group_name) VALUES (?)";
+    public void saveElement(Student s) {
+	String sql = "INSERT INTO students (first_name, last_name, group_id) VALUES (?, ?, ?)";
 	try (Connection connection = DriverManager.getConnection(AuthorizationData.URL, AuthorizationData.USER,
 		AuthorizationData.PASSWORD); PreparedStatement statement = connection.prepareStatement(sql)) {
-	    statement.setString(1, t.getName());
+	    statement.setString(1, s.getFirstName());
+	    statement.setString(2, s.getLastName());
+	    statement.setInt(3, s.getGroup().getId());
 	    statement.executeUpdate();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -36,12 +38,14 @@ public class GroupDao implements Dao<Group> {
     }
     
     @Override
-    public void saveList(List<Group> t) {
-	String sql = "INSERT INTO groups (group_name) VALUES (?)";
+    public void saveList(List<Student> s) {
+	String sql = "INSERT INTO students (first_name, last_name, group_id) VALUES (?, ?, ?)";
 	try (Connection connection = DriverManager.getConnection(AuthorizationData.URL, AuthorizationData.USER,
 		AuthorizationData.PASSWORD); PreparedStatement statement = connection.prepareStatement(sql)) {
-	    for (Group group : t) {
-		statement.setString(1, group.getName());
+	    for (Student student : s) {
+		statement.setString(1, student.getFirstName());
+		statement.setString(2, student.getLastName());
+		statement.setInt(3, student.getGroup().getId());
 		statement.addBatch();
 	    }
 	    statement.executeBatch();
@@ -51,13 +55,15 @@ public class GroupDao implements Dao<Group> {
     }
 
     @Override
-    public void update(Group t, String[] params) {
+    public void update(Student s, String[] params) {
 
+	
     }
 
     @Override
-    public void delete(Group t) {
+    public void delete(Student s) {
 
+	
     }
 
 }

@@ -2,6 +2,7 @@ package ua.com.foxminded.domain;
 
 public class Student {
 
+    private int id;
     private Group group;
     private String firstName;
     private String lastName;
@@ -33,6 +34,14 @@ public class Student {
 
     public void setGroup(Group group) {
 	this.group = group;
+    }
+
+    public int getId() {
+	return id;
+    }
+
+    public void setId(int id) {
+	this.id = id;
     }
 
 }

@@ -9,7 +9,9 @@ public interface Dao<T> {
 
     List<T> getAll();
 
-    void save(T t);
+    void saveElement(T t);
+    
+    void saveList(List<T> t);
 
     void update(T t, String[] params);
 

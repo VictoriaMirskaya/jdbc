@@ -24,12 +24,27 @@ public class CourseDao implements Dao<Course> {
     }
 
     @Override
-    public void save(Course t) {
+    public void saveElement(Course t) {
 	String sql = "INSERT INTO courses (course_name) VALUES (?)";
 	try (Connection connection = DriverManager.getConnection(AuthorizationData.URL, AuthorizationData.USER,
 		AuthorizationData.PASSWORD); PreparedStatement statement = connection.prepareStatement(sql)) {
 	    statement.setString(1, t.getName());
 	    statement.executeUpdate();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+    }
+    
+    @Override
+    public void saveList(List<Course> t) {
+	String sql = "INSERT INTO courses (course_name) VALUES (?)";
+	try (Connection connection = DriverManager.getConnection(AuthorizationData.URL, AuthorizationData.USER,
+		AuthorizationData.PASSWORD); PreparedStatement statement = connection.prepareStatement(sql)) {
+	    for (Course course : t) {
+		statement.setString(1, course.getName());
+		statement.addBatch();
+	    }	    
+	    statement.executeBatch();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
