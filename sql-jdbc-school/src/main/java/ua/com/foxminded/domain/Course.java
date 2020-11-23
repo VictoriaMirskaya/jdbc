@@ -10,7 +10,7 @@ public class Course {
 	this.id = id;
 	this.name = name;
     }
-    
+
     public Course(int id, String name, String description) {
 	this(id, name);
 	this.description = description;
@@ -23,21 +23,21 @@ public class Course {
     public void setId(int id) {
 	this.id = id;
     }
-    
+
     public String getName() {
-        return name;
+	return name;
     }
 
     public void setName(String name) {
-        this.name = name;
+	this.name = name;
     }
 
     public String getDescription() {
-        return description;
+	return description;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+	this.description = description;
     }
-    
+
 }

@@ -13,6 +13,14 @@ public class Student {
 	this.lastName = lastName;
     }
 
+    public int getId() {
+	return id;
+    }
+
+    public void setId(int id) {
+	this.id = id;
+    }
+
     public String getFirstName() {
 	return firstName;
     }
@@ -35,14 +43,6 @@ public class Student {
 
     public void setGroup(Group group) {
 	this.group = group;
-    }
-
-    public int getId() {
-	return id;
-    }
-
-    public void setId(int id) {
-	this.id = id;
     }
 
 }
