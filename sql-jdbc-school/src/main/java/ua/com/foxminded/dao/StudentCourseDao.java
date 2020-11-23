@@ -5,21 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 import ua.com.foxminded.AuthorizationData;
 import ua.com.foxminded.domain.StudentCourse;
 
 public class StudentCourseDao implements Dao<StudentCourse> {
-
-    @Override
-    public Optional<StudentCourse> get(long id) {
-	return null;
-    }
-
-    @Override
-    public List<StudentCourse> getAll() {
-	return null;
-    }
 
     @Override
     public void saveElement(StudentCourse sc) {
@@ -51,13 +40,14 @@ public class StudentCourseDao implements Dao<StudentCourse> {
     }
 
     @Override
-    public void update(StudentCourse t, String[] params) {
-	
-    }
-
-    @Override
-    public void delete(StudentCourse t) {
-	
+    public void delete(int id) {
+	String sql = "DELETE FROM students_courses WHERE id = " + id;
+	try (Connection connection = DriverManager.getConnection(AuthorizationData.URL, AuthorizationData.USER,
+		AuthorizationData.PASSWORD); PreparedStatement statement = connection.prepareStatement(sql)) {
+	    statement.executeUpdate();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
     }
 
 }

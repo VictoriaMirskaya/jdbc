@@ -5,32 +5,18 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 import ua.com.foxminded.AuthorizationData;
 import ua.com.foxminded.domain.Student;
 
 public class StudentDao implements Dao<Student> {
 
     @Override
-    public Optional<Student> get(long id) {
-
-	return null;
-    }
-
-    @Override
-    public List<Student> getAll() {
-
-	return null;
-    }
-
-    @Override
     public void saveElement(Student s) {
-	String sql = "INSERT INTO students (first_name, last_name, group_id) VALUES (?, ?, ?)";
+	String sql = "INSERT INTO students (first_name, last_name) VALUES (?, ?)";
 	try (Connection connection = DriverManager.getConnection(AuthorizationData.URL, AuthorizationData.USER,
 		AuthorizationData.PASSWORD); PreparedStatement statement = connection.prepareStatement(sql)) {
 	    statement.setString(1, s.getFirstName());
 	    statement.setString(2, s.getLastName());
-	    statement.setInt(3, s.getGroup().getId());
 	    statement.executeUpdate();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -55,15 +41,14 @@ public class StudentDao implements Dao<Student> {
     }
 
     @Override
-    public void update(Student s, String[] params) {
-
-	
-    }
-
-    @Override
-    public void delete(Student s) {
-
-	
+    public void delete(int id) {
+	String sql = "DELETE FROM students WHERE student_id = " + id;
+	try (Connection connection = DriverManager.getConnection(AuthorizationData.URL, AuthorizationData.USER,
+		AuthorizationData.PASSWORD); PreparedStatement statement = connection.prepareStatement(sql)) {
+	    statement.executeUpdate();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}	
     }
 
 }

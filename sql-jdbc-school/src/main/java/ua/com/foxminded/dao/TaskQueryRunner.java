@@ -18,10 +18,8 @@ public class TaskQueryRunner {
 	return null;
     }
 
-    public static boolean addNewStudent(String firstName, String lastName) {
-	
-	
-	return true;
+    public static void addNewStudent(Dao<Student> studentDao, String firstName, String lastName) {
+	studentDao.saveElement(new Student(firstName, lastName));
     }
 
     public static boolean deleteStudent(int StudentId) {

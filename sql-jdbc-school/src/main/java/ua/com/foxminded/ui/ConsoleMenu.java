@@ -55,9 +55,8 @@ public class ConsoleMenu {
 	    String firstName = scanner.next();
 	    System.out.println("Enter last name:"); 
 	    String lastName = scanner.next();
-	    if (TaskQueryRunner.addNewStudent(firstName, lastName)) {
-		System.out.println("New student created!");
-	    }	    
+	    TaskQueryRunner.addNewStudent(studentDao, firstName, lastName);
+	    System.out.println("New student created!");    
 	} else if (selectItem.equals("d")) {
 	    System.out.println("Enter student's id:");
 	    int studentId = scanner.nextInt();

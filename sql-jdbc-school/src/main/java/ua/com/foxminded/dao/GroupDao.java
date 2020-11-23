@@ -5,23 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 import ua.com.foxminded.AuthorizationData;
 import ua.com.foxminded.domain.Group;
 
 public class GroupDao implements Dao<Group> {
-
-    @Override
-    public Optional<Group> get(long id) {
-
-	return null;
-    }
-
-    @Override
-    public List<Group> getAll() {
-
-	return null;
-    }
 
     @Override
     public void saveElement(Group t) {
@@ -34,7 +21,7 @@ public class GroupDao implements Dao<Group> {
 	    e.printStackTrace();
 	}
     }
-    
+
     @Override
     public void saveList(List<Group> t) {
 	String sql = "INSERT INTO groups (group_name) VALUES (?)";
@@ -51,13 +38,14 @@ public class GroupDao implements Dao<Group> {
     }
 
     @Override
-    public void update(Group t, String[] params) {
-
-    }
-
-    @Override
-    public void delete(Group t) {
-
+    public void delete(int id) {
+	String sql = "DELETE FROM groups WHERE group_id = " + id;
+	try (Connection connection = DriverManager.getConnection(AuthorizationData.URL, AuthorizationData.USER,
+		AuthorizationData.PASSWORD); PreparedStatement statement = connection.prepareStatement(sql)) {
+	    statement.executeUpdate();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
     }
 
 }
