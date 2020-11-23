@@ -60,8 +60,8 @@ public class TestDataGenerator {
 	Collections.shuffle(firstNames);
 	Collections.shuffle(lastNames);
 	List<Student> students = new ArrayList<>();
-	for(int i = 0; i < 200; i++) {
-	    students.add(new Student(i+1, firstNames.get(i).getTitle(), lastNames.get(i).getTitle()));
+	for(int i = 1; i <= 200; i++) {
+	    students.add(new Student(i, firstNames.get(i-1).getTitle(), lastNames.get(i-1).getTitle()));
 	}
 	return students;
     }
@@ -76,9 +76,11 @@ public class TestDataGenerator {
 		if(index > 9) {
 		    break;
 		}
+		fullness = 0;
 		capasity = calculateGroupCapasity();
 	    }
 	    student.setGroup(groups.get(index));
+	    fullness++;
 	}
     }
 
