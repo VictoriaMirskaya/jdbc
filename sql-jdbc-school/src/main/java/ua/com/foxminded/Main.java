@@ -30,7 +30,7 @@ public class Main {
 	try {
 	    new SQLTablesCreator().createTables();
 	    new TestDataGenerator().generateTestData(courseDao, groupDao, studentDao, studentCourseDao);
-	    new ConsoleMenu().show(courseDao, groupDao, studentDao, studentCourseDao);
+	    new ConsoleMenu().show(studentDao, studentCourseDao);
 	} catch (IOException | SQLException e) {
 	    System.err.println(e.getMessage());
 	} catch (RuntimeException e) {
