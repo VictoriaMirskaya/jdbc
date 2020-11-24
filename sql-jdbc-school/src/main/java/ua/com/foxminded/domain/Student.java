@@ -1,11 +1,14 @@
 package ua.com.foxminded.domain;
 
+import java.util.List;
+
 public class Student {
 
     private int id;
-    private Group group;
     private String firstName;
     private String lastName;
+    private Group group;
+    private List<Course> cources;
 
     public Student(String firstName, String lastName) {
 	this.firstName = firstName;
@@ -48,6 +51,14 @@ public class Student {
 
     public void setGroup(Group group) {
 	this.group = group;
+    }
+
+    public List<Course> getCources() {
+	return cources;
+    }
+
+    public void setCources(List<Course> cources) {
+	this.cources = cources;
     }
 
 }

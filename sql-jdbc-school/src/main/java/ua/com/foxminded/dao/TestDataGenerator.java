@@ -8,17 +8,20 @@ import java.util.Random;
 import ua.com.foxminded.domain.Course;
 import ua.com.foxminded.domain.Group;
 import ua.com.foxminded.domain.Student;
-import ua.com.foxminded.domain.StudentCourse;
 
 public class TestDataGenerator {
     
     private final Random random = new Random();
       
-    public void generateTestData(Dao<Course> courseDao, Dao<Group> groupDao, Dao<Student> studentDao, Dao<StudentCourse> studentCourseDao) {
+    public void generateTestData(Dao<Course> courseDao, Dao<Group> groupDao, Dao<Student> studentDao) {
 	List<Group> groups = generateGroups(groupDao);
 	List<Course> courses = generateCourses(courseDao);
 	List<Student> students = generateStudents(studentDao, groups);
-	assignStudentsToCourses(studentCourseDao, students, courses);
+	assignStudentsToGroup(students, groups);
+	assignStudentsToCourses(students, courses);	
+	groupDao.saveList(groups);
+	courseDao.saveList(courses);
+	studentDao.saveList(students);
     }
 
     private List<Group> generateGroups(Dao<Group> groupDao) {
@@ -27,7 +30,6 @@ public class TestDataGenerator {
 	for(int i = 1; i <= groupsNames.size(); i++) {
 	    groups.add(new Group(i, groupsNames.get(i-1).getTitle()));
 	}
-	groupDao.saveList(groups);
 	return groups;
     }
 
@@ -37,18 +39,10 @@ public class TestDataGenerator {
 	for (int i = 1; i <= coursesNames.size(); i++) {
 	    courses.add(new Course(i, coursesNames.get(i-1).getTitle()));
 	}
-	courseDao.saveList(courses);
 	return courses;
     }
     
     private List<Student> generateStudents(Dao<Student> studentDao, List<Group> groups){
-	List<Student> students = createStudents();
-	assignStudentsToGroup(students, groups);
-	studentDao.saveList(students);
-	return students;
-    }
-    
-    private List<Student> createStudents() {
 	List<FirstNames> firstNames = new ArrayList<>();
 	for(int i = 0; i < 10; i++) {	    
 	    firstNames.addAll(Arrays.asList(FirstNames.values()));
@@ -62,10 +56,10 @@ public class TestDataGenerator {
 	List<Student> students = new ArrayList<>();
 	for(int i = 1; i <= 200; i++) {
 	    students.add(new Student(i, firstNames.get(i-1).getTitle(), lastNames.get(i-1).getTitle()));
-	}
+	}	
 	return students;
     }
-    
+     
     private void assignStudentsToGroup(List<Student> students, List<Group> groups) {
 	int capasity = calculateGroupCapasity();
 	int fullness = 0;
@@ -84,16 +78,17 @@ public class TestDataGenerator {
 	}
     }
 
-    private void assignStudentsToCourses(Dao<StudentCourse> studentCourseDao, List<Student> students, List<Course> courses) {
+    private void assignStudentsToCourses(List<Student> students, List<Course> courses) {
 	int courseQuantity;
-	List<StudentCourse> studentCourse = new ArrayList<>();
+	List<Course> studentCources;
 	for (Student student : students) {
 	    courseQuantity = calculateCourseQuantity();
+	    studentCources = new ArrayList<>();
 	    for(int i = 1; i <= courseQuantity; i ++) {
-		studentCourse.add(new StudentCourse(student.getId(), courses.get(generateRandomCourseIndex()).getId()));
+		studentCources.add(courses.get(generateRandomCourseIndex()));
 	    }
-	}
-	studentCourseDao.saveList(studentCourse);
+	    student.setCources(studentCources);
+	}	
     }
 
     private int calculateGroupCapasity() {

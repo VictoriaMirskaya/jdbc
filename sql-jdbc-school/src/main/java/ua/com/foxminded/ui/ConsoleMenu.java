@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Scanner;
 import ua.com.foxminded.dao.Dao;
 import ua.com.foxminded.dao.TaskQueryRunner;
+import ua.com.foxminded.domain.Course;
 import ua.com.foxminded.domain.Group;
 import ua.com.foxminded.domain.Student;
-import ua.com.foxminded.domain.StudentCourse;
 
 public class ConsoleMenu {
 
-    public void show(Dao<Student> studentDao, Dao<StudentCourse> studentCourseDao) {
+    public void show(Dao<Course> courseDao, Dao<Group> groupDao, Dao<Student> studentDao) {
 	try (Scanner scanner = new Scanner(System.in)) {
 	    boolean quitApplication = false;
 	    do {
@@ -18,7 +18,7 @@ public class ConsoleMenu {
 		String selectItem = scanner.next(); 
 		quitApplication = selectItem.equals("q");
 		if(!quitApplication) {
-		   printParametersAndResults(scanner, selectItem, studentDao, studentCourseDao);
+		   printParametersAndResults(scanner, selectItem, studentDao);
 		}
 	    } while (!quitApplication);
 	} catch (RuntimeException e) {
@@ -39,7 +39,7 @@ public class ConsoleMenu {
 	System.out.println("----------------------------------------------------");
     }
     
-    private static void printParametersAndResults(Scanner scanner, String selectItem, Dao<Student> studentDao, Dao<StudentCourse> studentCourseDao) {
+    private static void printParametersAndResults(Scanner scanner, String selectItem, Dao<Student> studentDao) {
 	if (selectItem.equals("a")) {
 	    System.out.println("Enter count of student:");
 	    int count = scanner.nextInt();
