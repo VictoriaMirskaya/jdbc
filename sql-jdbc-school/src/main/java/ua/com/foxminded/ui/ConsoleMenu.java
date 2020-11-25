@@ -60,9 +60,8 @@ public class ConsoleMenu {
 	} else if (selectItem.equals("d")) {
 	    System.out.println("Enter student's id:");
 	    int studentId = scanner.nextInt();
-	    if(TaskQueryRunner.deleteStudent(studentId)) {
-		System.out.println("Student deleted!");
-	    }
+	    TaskQueryRunner.deleteStudent(studentDao, studentId);
+	    System.out.println("Student deleted!");
 	} else if (selectItem.equals("e") || selectItem.equals("f")) {
 	    System.out.println("Choose student's id:");
 	    System.out.println("" + "1 Ann Green\n" + "2 Brandon West\n" + "3 Tom Fox\n");
@@ -71,13 +70,11 @@ public class ConsoleMenu {
 	    System.out.println("" + "1 math\n" + "2 it\n" + "3 art\n");
 	    int courseId = scanner.nextInt();
 	    if (selectItem.equals("e")) {
-		if (TaskQueryRunner.addStudentToCourse(studentId, courseId)) {
-		    System.out.println("Student added to the course!");
-		}
+		TaskQueryRunner.addStudentToCourse(studentId, courseId);
+		System.out.println("Student added to the course!");
 	    } else {
-		if (TaskQueryRunner.removeStudentFromCourse(studentId, courseId)) {
-		    System.out.println("Student removed from the course!");
-		}
+		TaskQueryRunner.removeStudentFromCourse(studentId, courseId);
+		System.out.println("Student removed from the course!");
 	    }
 	}
     }

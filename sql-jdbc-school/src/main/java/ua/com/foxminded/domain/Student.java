@@ -61,4 +61,8 @@ public class Student {
 	this.cources = cources;
     }
 
+    @Override
+    public String toString() {      
+        return "{id=" + this.id + ", firstName=" + this.firstName + ", lastName=" + this.lastName +"}";
+    }
 }
