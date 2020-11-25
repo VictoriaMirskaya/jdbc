@@ -80,12 +80,16 @@ public class TestDataGenerator {
 
     private void assignStudentsToCourses(List<Student> students, List<Course> courses) {
 	int courseQuantity;
+	int index;
 	List<Course> studentCources;
 	for (Student student : students) {
 	    courseQuantity = calculateCourseQuantity();
 	    studentCources = new ArrayList<>();
 	    for(int i = 1; i <= courseQuantity; i ++) {
-		studentCources.add(courses.get(generateRandomCourseIndex()));
+		index = generateRandomCourseIndex();
+		if (!studentCources.contains(courses.get(index))) {
+		    studentCources.add(courses.get(index));
+		}
 	    }
 	    student.setCources(studentCources);
 	}	

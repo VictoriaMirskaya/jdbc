@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+
+import ua.com.foxminded.domain.Course;
 import ua.com.foxminded.domain.Student;
 
 public class StudentDao implements Dao<Student> {
@@ -31,6 +33,24 @@ public class StudentDao implements Dao<Student> {
 		statement.setString(2, student.getLastName());
 		statement.setInt(3, student.getGroup().getId());
 		statement.addBatch();
+	    }
+	    statement.executeBatch();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	sql = "INSERT INTO students_courses (course_id, student_id) VALUES (?, ?)";
+	try (Connection connection = DBCPDataSource.getConnection();
+		PreparedStatement statement = connection.prepareStatement(sql)) {
+	    List<Course> cources;
+	    for (Student student : s) {
+		cources = student.getCources();
+		if(cources!=null) {		    
+		    for(Course course: cources) {		    
+			statement.setInt(1, course.getId());
+			statement.setInt(2, student.getId());
+			statement.addBatch();
+		    }
+		}
 	    }
 	    statement.executeBatch();
 	} catch (SQLException e) {

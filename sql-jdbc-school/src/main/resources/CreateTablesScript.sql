@@ -23,8 +23,8 @@ CREATE TABLE students(
 	CONSTRAINT fk_group FOREIGN KEY(group_id) REFERENCES groups(group_id) ON DELETE CASCADE);
 	
 CREATE TABLE students_courses(
-	id INT GENERATED ALWAYS AS IDENTITY, 
-	student_id INT, course_id INT, 
-	PRIMARY KEY(course_id), 
+	student_id INT, 
+	course_id INT, 
+	PRIMARY KEY(course_id, student_id), 
 	CONSTRAINT fk_student FOREIGN KEY(student_id) REFERENCES students(student_id) ON DELETE CASCADE,  
 	CONSTRAINT fk_course FOREIGN KEY(course_id) REFERENCES courses(course_id) ON DELETE CASCADE);
