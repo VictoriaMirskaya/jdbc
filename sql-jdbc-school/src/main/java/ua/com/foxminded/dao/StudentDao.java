@@ -4,14 +4,25 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
-
 import ua.com.foxminded.domain.Course;
 import ua.com.foxminded.domain.Student;
 
 public class StudentDao implements Dao<Student> {
 
     @Override
-    public void saveElement(Student student) {
+    public void findElement(Student t) {
+	// TODO Auto-generated method stub
+	
+    }
+
+    @Override
+    public void findList(List<Student> t) {
+	// TODO Auto-generated method stub
+	
+    }
+    
+    @Override
+    public void addElement(Student student) {
 	String sql = "INSERT INTO students (first_name, last_name) VALUES (?, ?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -24,7 +35,7 @@ public class StudentDao implements Dao<Student> {
     }
     
     @Override
-    public void saveList(List<Student> students) {
+    public void addList(List<Student> students) {
 	String sql = "INSERT INTO students (first_name, last_name, group_id) VALUES (?, ?, ?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -59,14 +70,20 @@ public class StudentDao implements Dao<Student> {
     }
 
     @Override
-    public void delete(int id) {
-	String sql = "DELETE FROM students WHERE student_id = " + id;
+    public void deleteElement(Student student) {
+	String sql = "DELETE FROM students WHERE student_id = " + student.getId();
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
 	    statement.executeUpdate();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}	
+    }
+
+    @Override
+    public void deleteList(List<Student> t) {
+	// TODO Auto-generated method stub
+	
     }
 
 }

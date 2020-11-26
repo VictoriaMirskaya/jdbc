@@ -9,7 +9,19 @@ import ua.com.foxminded.domain.Course;
 public class CourseDao implements Dao<Course> {
 
     @Override
-    public void saveElement(Course course) {
+    public void findElement(Course t) {
+	// TODO Auto-generated method stub
+	
+    }
+
+    @Override
+    public void findList(List<Course> t) {
+	// TODO Auto-generated method stub
+	
+    }
+    
+    @Override
+    public void addElement(Course course) {
 	String sql = "INSERT INTO courses (course_name) VALUES (?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -21,7 +33,7 @@ public class CourseDao implements Dao<Course> {
     }
 
     @Override
-    public void saveList(List<Course> courses) {
+    public void addList(List<Course> courses) {
 	String sql = "INSERT INTO courses (course_name) VALUES (?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -36,14 +48,20 @@ public class CourseDao implements Dao<Course> {
     }
 
     @Override
-    public void delete(int id) {
-	String sql = "DELETE FROM courses WHERE course_id = " + id;
+    public void deleteElement(Course course) {
+	String sql = "DELETE FROM courses WHERE course_id = " + course.getId();
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
 	    statement.executeUpdate();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
+    }
+
+    @Override
+    public void deleteList(List<Course> t) {
+	// TODO Auto-generated method stub
+	
     }
 
 }

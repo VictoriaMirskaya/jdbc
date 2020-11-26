@@ -4,10 +4,16 @@ import java.util.List;
 
 public interface Dao<T> {
 
-    void saveElement(T t);
+    void findElement(T t);
     
-    void saveList(List<T> t);
+    void findList(List<T> t);
+    
+    void addElement(T t);
+    
+    void addList(List<T> t);
 
-    void delete(int id);
+    void deleteElement(T t);
+    
+    void deleteList(List<T> t);
 
 }
