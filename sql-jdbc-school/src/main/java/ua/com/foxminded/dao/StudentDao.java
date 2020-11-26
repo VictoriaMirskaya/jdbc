@@ -80,18 +80,18 @@ public class StudentDao implements Dao<Student> {
     }
     
     private List<Student> findStudentsRelatedToCourseWithGivenName(List<Student> students, String courseName) {
-   	final String sql = "" + courseName;
-   	try (Connection connection = DBCPDataSource.getConnection();
-   		Statement statement = connection.createStatement();
-   		ResultSet rs = statement.executeQuery(sql)) {
-   	    while (rs.next()) {
-   		students.add(
-   			new Student(rs.getInt("student_id"), rs.getString("first_name"), rs.getString("last_name")));
-   	    }
-   	} catch (SQLException e) {
-   	    e.printStackTrace();
-   	}
-   	return students;
-       }
+	final String sql = "" + courseName;
+	try (Connection connection = DBCPDataSource.getConnection();
+		Statement statement = connection.createStatement();
+		ResultSet rs = statement.executeQuery(sql)) {
+	    while (rs.next()) {
+		students.add(
+			new Student(rs.getInt("student_id"), rs.getString("first_name"), rs.getString("last_name")));
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return students;
+    }
 
 }

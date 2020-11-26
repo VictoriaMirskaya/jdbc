@@ -38,7 +38,7 @@ public class GroupDao implements Dao<Group> {
     }
 
     @Override
-    public void delete(List<Group> t) {
+    public void delete(List<Group> groups) {
 
     }
     

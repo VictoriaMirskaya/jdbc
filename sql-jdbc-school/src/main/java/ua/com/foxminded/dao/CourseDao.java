@@ -31,7 +31,7 @@ public class CourseDao implements Dao<Course> {
     }
 
     @Override
-    public void delete(List<Course> t) {
+    public void delete(List<Course> courses) {
 	
     }
 
