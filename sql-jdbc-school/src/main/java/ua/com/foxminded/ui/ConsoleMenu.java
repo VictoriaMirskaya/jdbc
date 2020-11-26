@@ -3,7 +3,6 @@ package ua.com.foxminded.ui;
 import java.util.List;
 import java.util.Scanner;
 import ua.com.foxminded.dao.Dao;
-import ua.com.foxminded.dao.TaskQueryRunner;
 import ua.com.foxminded.domain.Course;
 import ua.com.foxminded.domain.Group;
 import ua.com.foxminded.domain.Student;
@@ -15,10 +14,10 @@ public class ConsoleMenu {
 	    boolean quitApplication = false;
 	    do {
 		printMenuItems();
-		String selectItem = scanner.next(); 
+		String selectItem = scanner.next();
 		quitApplication = selectItem.equals("q");
-		if(!quitApplication) {
-		   printParametersAndResults(scanner, selectItem, studentDao);
+		if (!quitApplication) {
+		    printParametersAndResults(scanner, selectItem, courseDao, groupDao, studentDao);
 		}
 	    } while (!quitApplication);
 	} catch (RuntimeException e) {
@@ -39,28 +38,28 @@ public class ConsoleMenu {
 	System.out.println("----------------------------------------------------");
     }
     
-    private static void printParametersAndResults(Scanner scanner, String selectItem, Dao<Student> studentDao) {
+    private static void printParametersAndResults(Scanner scanner, String selectItem, Dao<Course> courseDao, Dao<Group> groupDao, Dao<Student> studentDao) {
 	if (selectItem.equals("a")) {
 	    System.out.println("Enter count of student:");
 	    int count = scanner.nextInt();
-	    List<Group> groups = TaskQueryRunner.findGroups(count);
+	    List<Group> groups = groupDao.findList("Find all groups with less or equals student count", count);
 	    System.out.println(groups);
 	} else if (selectItem.equals("b")) {
 	    System.out.println("Enter course's name:");
 	    String courseName = scanner.next();
-	    List<Student> students = TaskQueryRunner.findStudents(courseName);
+	    List<Student> students = studentDao.findList("Find all groups with less or equals student count", courseName);
 	    System.out.println(students);
 	} else if (selectItem.equals("c")) {
 	    System.out.println("Enter first name:");
 	    String firstName = scanner.next();
 	    System.out.println("Enter last name:"); 
 	    String lastName = scanner.next();
-	    TaskQueryRunner.addNewStudent(studentDao, firstName, lastName);
+	    studentDao.addElement(new Student(firstName, lastName));
 	    System.out.println("New student created!");    
 	} else if (selectItem.equals("d")) {
 	    System.out.println("Enter student's id:");
 	    int studentId = scanner.nextInt();
-	    TaskQueryRunner.deleteStudent(studentDao, studentId);
+	    studentDao.deleteElement(new Student(studentId));
 	    System.out.println("Student deleted!");
 	} else if (selectItem.equals("e") || selectItem.equals("f")) {
 	    System.out.println("Choose student's id:");

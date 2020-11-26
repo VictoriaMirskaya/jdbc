@@ -2,11 +2,15 @@ package ua.com.foxminded.dao;
 
 import java.util.List;
 
-public interface Dao<T> {
+public interface Dao<T> {  
 
-    void findElement(T t);
+    T findElement(String condition, int parameterValue);
     
-    void findList(List<T> t);
+    T findElement(String condition, String parameterValue);
+    
+    List<T> findList(String condition, int parameterValue);
+    
+    List<T> findList(String condition, String parameterValue);
     
     void addElement(T t);
     

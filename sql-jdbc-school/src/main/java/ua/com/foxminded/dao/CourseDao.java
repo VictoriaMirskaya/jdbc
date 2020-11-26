@@ -9,15 +9,23 @@ import ua.com.foxminded.domain.Course;
 public class CourseDao implements Dao<Course> {
 
     @Override
-    public void findElement(Course t) {
-	// TODO Auto-generated method stub
-	
+    public Course findElement(String condition, int parameterValue) {
+	return null;	
     }
 
     @Override
-    public void findList(List<Course> t) {
-	// TODO Auto-generated method stub
-	
+    public Course findElement(String condition, String parameterValue) {
+	return null;	
+    }
+       
+    @Override
+    public List<Course> findList(String condition, int parameterValue) {
+	return null;	
+    }
+    
+    @Override
+    public List<Course> findList(String condition, String parameterValue) {
+	return null;	
     }
     
     @Override
