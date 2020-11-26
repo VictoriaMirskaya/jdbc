@@ -9,11 +9,11 @@ import ua.com.foxminded.domain.Course;
 public class CourseDao implements Dao<Course> {
 
     @Override
-    public void saveElement(Course t) {
+    public void saveElement(Course course) {
 	String sql = "INSERT INTO courses (course_name) VALUES (?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
-	    statement.setString(1, t.getName());
+	    statement.setString(1, course.getName());
 	    statement.executeUpdate();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -21,11 +21,11 @@ public class CourseDao implements Dao<Course> {
     }
 
     @Override
-    public void saveList(List<Course> t) {
+    public void saveList(List<Course> courses) {
 	String sql = "INSERT INTO courses (course_name) VALUES (?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
-	    for (Course course : t) {
+	    for (Course course : courses) {
 		statement.setString(1, course.getName());
 		statement.addBatch();
 	    }

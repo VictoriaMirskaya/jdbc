@@ -11,12 +11,12 @@ import ua.com.foxminded.domain.Student;
 public class StudentDao implements Dao<Student> {
 
     @Override
-    public void saveElement(Student s) {
+    public void saveElement(Student student) {
 	String sql = "INSERT INTO students (first_name, last_name) VALUES (?, ?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
-	    statement.setString(1, s.getFirstName());
-	    statement.setString(2, s.getLastName());
+	    statement.setString(1, student.getFirstName());
+	    statement.setString(2, student.getLastName());
 	    statement.executeUpdate();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -24,11 +24,11 @@ public class StudentDao implements Dao<Student> {
     }
     
     @Override
-    public void saveList(List<Student> s) {
+    public void saveList(List<Student> students) {
 	String sql = "INSERT INTO students (first_name, last_name, group_id) VALUES (?, ?, ?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
-	    for (Student student : s) {
+	    for (Student student : students) {
 		statement.setString(1, student.getFirstName());
 		statement.setString(2, student.getLastName());
 		statement.setInt(3, student.getGroup().getId());
@@ -42,7 +42,7 @@ public class StudentDao implements Dao<Student> {
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
 	    List<Course> cources;
-	    for (Student student : s) {
+	    for (Student student : students) {
 		cources = student.getCources();
 		if(cources!=null) {		    
 		    for(Course course: cources) {		    

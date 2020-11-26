@@ -51,4 +51,9 @@ public class Course {
 	this.students = students;
     }
 
+    @Override
+    public String toString() {      
+        return "{id=" + this.id + ", name=" + this.name +"}";
+    }
+    
 }

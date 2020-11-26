@@ -14,9 +14,9 @@ public class TestDataGenerator {
     private final Random random = new Random();
       
     public void generateTestData(Dao<Course> courseDao, Dao<Group> groupDao, Dao<Student> studentDao) {
-	List<Group> groups = generateGroups(groupDao);
-	List<Course> courses = generateCourses(courseDao);
-	List<Student> students = generateStudents(studentDao, groups);
+	List<Group> groups = generateGroups();
+	List<Course> courses = generateCourses();
+	List<Student> students = generateStudents();
 	assignStudentsToGroup(students, groups);
 	assignStudentsToCourses(students, courses);	
 	groupDao.saveList(groups);
@@ -24,7 +24,7 @@ public class TestDataGenerator {
 	studentDao.saveList(students);
     }
 
-    private List<Group> generateGroups(Dao<Group> groupDao) {
+    private List<Group> generateGroups() {
 	List<GroupNames> groupsNames = Arrays.asList(GroupNames.values());
 	List<Group> groups = new ArrayList<>();	
 	for(int i = 1; i <= groupsNames.size(); i++) {
@@ -33,7 +33,7 @@ public class TestDataGenerator {
 	return groups;
     }
 
-    private List<Course> generateCourses(Dao<Course> courseDao) {
+    private List<Course> generateCourses() {
 	List<CourseNames> coursesNames = Arrays.asList(CourseNames.values());
 	List<Course> courses = new ArrayList<>();
 	for (int i = 1; i <= coursesNames.size(); i++) {
@@ -42,7 +42,7 @@ public class TestDataGenerator {
 	return courses;
     }
     
-    private List<Student> generateStudents(Dao<Student> studentDao, List<Group> groups){
+    private List<Student> generateStudents(){
 	List<FirstNames> firstNames = new ArrayList<>();
 	for(int i = 0; i < 10; i++) {	    
 	    firstNames.addAll(Arrays.asList(FirstNames.values()));

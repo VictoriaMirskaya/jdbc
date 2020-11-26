@@ -9,11 +9,11 @@ import ua.com.foxminded.domain.Group;
 public class GroupDao implements Dao<Group> {
 
     @Override
-    public void saveElement(Group t) {
+    public void saveElement(Group group) {
 	String sql = "INSERT INTO groups (group_name) VALUES (?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
-	    statement.setString(1, t.getName());
+	    statement.setString(1, group.getName());
 	    statement.executeUpdate();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -21,11 +21,11 @@ public class GroupDao implements Dao<Group> {
     }
 
     @Override
-    public void saveList(List<Group> t) {
+    public void saveList(List<Group> groups) {
 	String sql = "INSERT INTO groups (group_name) VALUES (?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
-	    for (Group group : t) {
+	    for (Group group : groups) {
 		statement.setString(1, group.getName());
 		statement.addBatch();
 	    }
