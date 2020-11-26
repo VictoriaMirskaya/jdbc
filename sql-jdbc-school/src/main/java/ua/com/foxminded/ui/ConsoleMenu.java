@@ -1,5 +1,6 @@
 package ua.com.foxminded.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import ua.com.foxminded.dao.Dao;
@@ -42,39 +43,43 @@ public class ConsoleMenu {
 	if (selectItem.equals("a")) {
 	    System.out.println("Enter count of student:");
 	    int count = scanner.nextInt();
-	    List<Group> groups = groupDao.findList("Find all groups with less or equals student count", count);
+	    List<Group> groups = groupDao.find("Find all groups with less or equals student count", Integer.valueOf(count));
 	    System.out.println(groups);
 	} else if (selectItem.equals("b")) {
 	    System.out.println("Enter course's name:");
 	    String courseName = scanner.next();
-	    List<Student> students = studentDao.findList("Find all groups with less or equals student count", courseName);
+	    List<Student> students = studentDao.find("Find all groups with less or equals student count", courseName);
 	    System.out.println(students);
 	} else if (selectItem.equals("c")) {
 	    System.out.println("Enter first name:");
 	    String firstName = scanner.next();
 	    System.out.println("Enter last name:"); 
 	    String lastName = scanner.next();
-	    studentDao.addElement(new Student(firstName, lastName));
+	    List<Student> students = new ArrayList<>();
+	    students.add(new Student(firstName, lastName));
+	    studentDao.add(students);
 	    System.out.println("New student created!");    
 	} else if (selectItem.equals("d")) {
 	    System.out.println("Enter student's id:");
 	    int studentId = scanner.nextInt();
-	    studentDao.deleteElement(new Student(studentId));
+	    List<Student> students = new ArrayList<>();
+	    students.add(new Student(studentId));
+	    studentDao.delete(students);
 	    System.out.println("Student deleted!");
-	} else if (selectItem.equals("e") || selectItem.equals("f")) {
-	    System.out.println("Choose student's id:");
-	    System.out.println("" + "1 Ann Green\n" + "2 Brandon West\n" + "3 Tom Fox\n");
-	    int studentId = scanner.nextInt();
-	    System.out.println("Choose course's id:");
-	    System.out.println("" + "1 math\n" + "2 it\n" + "3 art\n");
-	    int courseId = scanner.nextInt();
-	    if (selectItem.equals("e")) {
-		TaskQueryRunner.addStudentToCourse(studentId, courseId);
-		System.out.println("Student added to the course!");
-	    } else {
-		TaskQueryRunner.removeStudentFromCourse(studentId, courseId);
-		System.out.println("Student removed from the course!");
-	    }
+//	} else if (selectItem.equals("e") || selectItem.equals("f")) {
+//	    System.out.println("Choose student's id:");
+//	    System.out.println("" + "1 Ann Green\n" + "2 Brandon West\n" + "3 Tom Fox\n");
+//	    int studentId = scanner.nextInt();
+//	    System.out.println("Choose course's id:");
+//	    System.out.println("" + "1 math\n" + "2 it\n" + "3 art\n");
+//	    int courseId = scanner.nextInt();
+//	    if (selectItem.equals("e")) {
+//		TaskQueryRunner.addStudentToCourse(studentId, courseId);
+//		System.out.println("Student added to the course!");
+//	    } else {
+//		TaskQueryRunner.removeStudentFromCourse(studentId, courseId);
+//		System.out.println("Student removed from the course!");
+//	    }
 	}
     }
     

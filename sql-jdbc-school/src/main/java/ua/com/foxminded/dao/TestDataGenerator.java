@@ -19,16 +19,16 @@ public class TestDataGenerator {
 	List<Student> students = generateStudents();
 	assignStudentsToGroup(students, groups);
 	assignStudentsToCourses(students, courses);	
-	groupDao.saveList(groups);
-	courseDao.saveList(courses);
-	studentDao.saveList(students);
+	groupDao.add(groups);
+	courseDao.add(courses);
+	studentDao.add(students);
     }
 
     private List<Group> generateGroups() {
 	List<GroupNames> groupsNames = Arrays.asList(GroupNames.values());
-	List<Group> groups = new ArrayList<>();	
-	for(int i = 1; i <= groupsNames.size(); i++) {
-	    groups.add(new Group(i, groupsNames.get(i-1).getTitle()));
+	List<Group> groups = new ArrayList<>();
+	for (GroupNames groupNames : groupsNames) {
+	    groups.add(new Group(groupNames.getTitle()));
 	}
 	return groups;
     }
@@ -36,8 +36,8 @@ public class TestDataGenerator {
     private List<Course> generateCourses() {
 	List<CourseNames> coursesNames = Arrays.asList(CourseNames.values());
 	List<Course> courses = new ArrayList<>();
-	for (int i = 1; i <= coursesNames.size(); i++) {
-	    courses.add(new Course(i, coursesNames.get(i-1).getTitle()));
+	for (CourseNames courseNames : coursesNames) {
+	    courses.add(new Course(courseNames.getTitle()));
 	}
 	return courses;
     }
@@ -55,7 +55,7 @@ public class TestDataGenerator {
 	Collections.shuffle(lastNames);
 	List<Student> students = new ArrayList<>();
 	for(int i = 1; i <= 200; i++) {
-	    students.add(new Student(i, firstNames.get(i-1).getTitle(), lastNames.get(i-1).getTitle()));
+	    students.add(new Student(firstNames.get(i-1).getTitle(), lastNames.get(i-1).getTitle()));
 	}	
 	return students;
     }

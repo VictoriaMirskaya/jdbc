@@ -8,6 +8,10 @@ public class Group {
     private String name;
     private List<Student> students;
 
+    public Group(String name) {
+	this.name = name;
+    }
+    
     public Group(int id, String name) {
 	this.id = id;
 	this.name = name;

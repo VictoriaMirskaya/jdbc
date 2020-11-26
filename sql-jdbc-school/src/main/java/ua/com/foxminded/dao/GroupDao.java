@@ -10,30 +10,36 @@ import java.util.List;
 import ua.com.foxminded.domain.Group;
 
 public class GroupDao implements Dao<Group> {
-    
-    @Override
-    public Group findElement(String condition, int parameterValue) {
-	return null;	
-    }
-    
-    @Override
-    public Group findElement(String condition, String parameterValue) {
-	return null;
-    }
 
     @Override
-    public List<Group> findList(String condition, int parameterValue) {
+    public List<Group> find(String condition, Object parameterValue) {
 	List<Group> groups = new ArrayList<>();
 	if (condition.equals("Find all groups with less or equals student count")) {
-	    findGroupsWhithLessOrEqualsStudentCount(groups, parameterValue);
+	    findGroupsWhithLessOrEqualsStudentCount(groups, (Integer)parameterValue);
 	}
 	return groups;
     }
 
     @Override
-    public List<Group> findList(String condition, String parameterValue) {
-	List<Group> groups = new ArrayList<>();
-	return groups;
+    public void add(List<Group> groups) {
+	String sql = "INSERT INTO groups (group_name) VALUES (?)";
+	try (Connection connection = DBCPDataSource.getConnection();
+		PreparedStatement statement = connection.prepareStatement(sql)) {
+	    for (Group group : groups) {
+		if (group.getId() == 0) {
+		    statement.setString(1, group.getName());
+		    statement.addBatch();
+		}
+	    }
+	    statement.executeBatch();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+    }
+
+    @Override
+    public void delete(List<Group> t) {
+
     }
     
     private void findGroupsWhithLessOrEqualsStudentCount(List<Group> groups, int count) {
@@ -50,50 +56,6 @@ public class GroupDao implements Dao<Group> {
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
-    }
-
-    @Override
-    public void addElement(Group group) {
-	String sql = "INSERT INTO groups (group_name) VALUES (?)";
-	try (Connection connection = DBCPDataSource.getConnection();
-		PreparedStatement statement = connection.prepareStatement(sql)) {
-	    statement.setString(1, group.getName());
-	    statement.executeUpdate();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
-    }
-
-    @Override
-    public void addList(List<Group> groups) {
-	String sql = "INSERT INTO groups (group_name) VALUES (?)";
-	try (Connection connection = DBCPDataSource.getConnection();
-		PreparedStatement statement = connection.prepareStatement(sql)) {
-	    for (Group group : groups) {
-		statement.setString(1, group.getName());
-		statement.addBatch();
-	    }
-	    statement.executeBatch();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
-    }
-
-    @Override
-    public void deleteElement(Group group) {
-	String sql = "DELETE FROM groups WHERE group_id = " + group.getId();
-	try (Connection connection = DBCPDataSource.getConnection();
-		PreparedStatement statement = connection.prepareStatement(sql)) {
-	    statement.executeUpdate();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
-    }
-
-    @Override
-    public void deleteList(List<Group> t) {
-	// TODO Auto-generated method stub
-	
     }
 
 }

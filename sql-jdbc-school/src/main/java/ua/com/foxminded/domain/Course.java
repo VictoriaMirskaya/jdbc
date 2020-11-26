@@ -9,6 +9,10 @@ public class Course {
     private String description;
     private List<Student> students;
 
+    public Course(String name) {
+   	this.name = name;
+    }
+    
     public Course(int id, String name) {
 	this.id = id;
 	this.name = name;
