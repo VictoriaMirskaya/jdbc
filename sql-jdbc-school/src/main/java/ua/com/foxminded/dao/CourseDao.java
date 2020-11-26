@@ -15,7 +15,7 @@ public class CourseDao implements Dao<Course> {
 
     @Override
     public void add(List<Course> courses) {
-	String sql = "INSERT INTO courses (course_name) VALUES (?)";
+	final String sql = "INSERT INTO courses (course_name) VALUES (?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
 	    for (Course course : courses) {

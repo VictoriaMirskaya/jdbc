@@ -23,9 +23,10 @@ public class StudentDao implements Dao<Student> {
 
     @Override
     public void add(List<Student> students) {	
-	try (Connection connection = DBCPDataSource.getConnection()) {
-	    String sql = "INSERT INTO students (first_name, last_name, group_id) VALUES (?, ?, ?)";
-	    try (PreparedStatement statement = connection.prepareStatement(sql)) {
+	final String sql = "INSERT INTO students (first_name, last_name, group_id) VALUES (?, ?, ?);"
+	                 + "INSERT INTO students_courses (course_id, student_id) VALUES (?, ?)";
+	try (Connection connection = DBCPDataSource.getConnection();
+		PreparedStatement statement = connection.prepareStatement(sql)) {
 		for (Student student : students) {
 		    if (student.getId() == 0) {
 			statement.setString(1, student.getFirstName());
@@ -34,27 +35,18 @@ public class StudentDao implements Dao<Student> {
 			statement.addBatch();
 		    }
 		}
-		statement.executeBatch();
-	    } catch (SQLException e) {
-		e.printStackTrace();
-	    }
-	    sql = "INSERT INTO students_courses (course_id, student_id) VALUES (?, ?)";
-	    try (PreparedStatement statement = connection.prepareStatement(sql)) {
 		List<Course> cources;
 		for (Student student : students) {
 		    cources = student.getCources();
 		    if (cources != null) {
 			for (Course course : cources) {
-			    statement.setInt(1, course.getId());
-			    statement.setInt(2, student.getId());
+			    statement.setInt(4, course.getId());
+			    statement.setInt(5, student.getId());
 			    statement.addBatch();
 			}
 		    }
 		}
 		statement.executeBatch();
-	    } catch (SQLException e) {
-		e.printStackTrace();
-	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
@@ -62,41 +54,33 @@ public class StudentDao implements Dao<Student> {
 
     @Override
     public void delete(List<Student> students) {
-	try (Connection connection = DBCPDataSource.getConnection()) {
-	    String sql = "DELETE FROM students WHERE student_id = ?";
-	    try (PreparedStatement statement = connection.prepareStatement(sql)) {
+	final String sql = "DELETE FROM students WHERE student_id = ?;"
+		         + "DELETE FROM students_courses WHERE course_id = ? AND student_id = ?";
+	try (Connection connection = DBCPDataSource.getConnection();
+		PreparedStatement statement = connection.prepareStatement(sql)) {
 		for (Student student : students) {
 		    statement.setInt(1, student.getId());
 		    statement.addBatch();
 		}
-		statement.executeBatch();
-	    } catch (SQLException e) {
-		e.printStackTrace();
-	    }
-	    sql = "DELETE FROM students_courses WHERE course_id = ? AND student_id = ?";
-	    try (PreparedStatement statement = connection.prepareStatement(sql)) {
 		List<Course> cources;
 		for (Student student : students) {
 		    cources = student.getCources();
 		    if (cources != null) {
 			for (Course course : cources) {
-			    statement.setInt(1, course.getId());
-			    statement.setInt(2, student.getId());
+			    statement.setInt(2, course.getId());
+			    statement.setInt(3, student.getId());
 			    statement.addBatch();
 			}
-			statement.executeBatch();
 		    }
 		}
-	    } catch (SQLException e) {
-		e.printStackTrace();
-	    }
+		statement.executeBatch();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
     }
     
     private List<Student> findStudentsRelatedToCourseWithGivenName(List<Student> students, String courseName) {
-   	String sql = "" + courseName;
+   	final String sql = "" + courseName;
    	try (Connection connection = DBCPDataSource.getConnection();
    		Statement statement = connection.createStatement();
    		ResultSet rs = statement.executeQuery(sql)) {

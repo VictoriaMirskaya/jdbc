@@ -22,7 +22,7 @@ public class GroupDao implements Dao<Group> {
 
     @Override
     public void add(List<Group> groups) {
-	String sql = "INSERT INTO groups (group_name) VALUES (?)";
+	final String sql = "INSERT INTO groups (group_name) VALUES (?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
 	    for (Group group : groups) {
@@ -43,7 +43,7 @@ public class GroupDao implements Dao<Group> {
     }
     
     private void findGroupsWhithLessOrEqualsStudentCount(List<Group> groups, int count) {
-	String sql = "SELECT students.group_id, groups.group_name FROM students "
+	final String sql = "SELECT students.group_id, groups.group_name FROM students "
 		+ "JOIN groups ON students.group_id = groups.group_id "
 		+ "GROUP BY (students.group_id, groups.group_name) " 
 		+ "HAVING count(students.student_id) <=" + count;
