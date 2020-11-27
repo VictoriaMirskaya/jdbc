@@ -1,26 +1,13 @@
 package ua.com.foxminded.domain;
 
-import java.util.List;
-
 public class Course {
 
     private int id;
     private String name;
     private String description;
-    private List<Student> students;
 
     public Course(String name) {
    	this.name = name;
-    }
-    
-    public Course(int id, String name) {
-	this.id = id;
-	this.name = name;
-    }
-
-    public Course(int id, String name, String description) {
-	this(id, name);
-	this.description = description;
     }
 
     public int getId() {
@@ -47,17 +34,9 @@ public class Course {
 	this.description = description;
     }
 
-    public List<Student> getStudents() {
-	return students;
-    }
-
-    public void setStudents(List<Student> students) {
-	this.students = students;
-    }
-
     @Override
     public String toString() {      
-        return "{id=" + this.id + ", name=" + this.name +"}\n";
+        return "\n{id=" + this.id + ", name=" + this.name +"}";
     }
     
 }

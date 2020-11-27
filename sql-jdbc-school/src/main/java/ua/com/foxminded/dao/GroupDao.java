@@ -13,8 +13,21 @@ public class GroupDao implements Dao<Group> {
     
     @Override
     public List<Group> selectAll() {
-	// TODO Auto-generated method stub
-	return null;
+	List<Group> groups = new ArrayList<>();
+	final String sql = "SELECT groups.group_id, groups.group_name FROM groups";
+	try (Connection connection = DBCPDataSource.getConnection();
+		Statement statement = connection.createStatement();
+		ResultSet rs = statement.executeQuery(sql)) {
+	    Group group;
+	    while (rs.next()) {
+		group = new Group(rs.getString("group_name"));
+		group.setId(rs.getInt("group_id"));
+		groups.add(group);
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return groups;
     }
     
     @Override
@@ -36,7 +49,14 @@ public class GroupDao implements Dao<Group> {
 
     @Override
     public void deleteById(int id) {
-
+	final String sql = "DELETE FROM groups WHERE group_id = ?";
+	try (Connection connection = DBCPDataSource.getConnection();
+		PreparedStatement statement = connection.prepareStatement(sql)) {
+	    statement.setInt(1, id);
+	    statement.execute();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
     }
     
     public List<Group> findGroupsWhithLessOrEqualsStudentCount(int count) {
@@ -48,8 +68,11 @@ public class GroupDao implements Dao<Group> {
 	try (Connection connection = DBCPDataSource.getConnection();
 		Statement statement = connection.createStatement();
 		ResultSet rs = statement.executeQuery(sql)) {
+	    Group group;
 	    while (rs.next()) {
-		groups.add(new Group(rs.getInt("group_id"), rs.getString("group_name")));
+		group = new Group(rs.getString("group_name"));
+		group.setId(rs.getInt("group_id"));
+		groups.add(group);
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();

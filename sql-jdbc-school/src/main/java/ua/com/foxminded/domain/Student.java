@@ -10,17 +10,7 @@ public class Student {
     private Group group;
     private List<Course> cources;
 
-    public Student(int id) {
-   	this.id = id;
-    }
-    
     public Student(String firstName, String lastName) {
-	this.firstName = firstName;
-	this.lastName = lastName;
-    }
-    
-    public Student(int id, String firstName, String lastName) {
-	this.id = id;
 	this.firstName = firstName;
 	this.lastName = lastName;
     }
@@ -67,6 +57,6 @@ public class Student {
 
     @Override
     public String toString() {      
-        return "{id=" + this.id + ", firstName=" + this.firstName + ", lastName=" + this.lastName +"}\n";
+        return "\n{id=" + this.id + ", firstName=" + this.firstName + ", lastName=" + this.lastName +"}";
     }
 }

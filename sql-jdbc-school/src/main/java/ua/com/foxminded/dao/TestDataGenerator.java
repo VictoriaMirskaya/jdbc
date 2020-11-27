@@ -14,35 +14,32 @@ public class TestDataGenerator {
     private final Random random = new Random();
       
     public void generateTestData(Dao<Course> courseDao, Dao<Group> groupDao, Dao<Student> studentDao) {
-	List<Group> groups = generateGroups();
-	List<Course> courses = generateCourses();
-	List<Student> students = generateStudents();
-	assignStudentsToGroup(students, groups);
-	assignStudentsToCourses(students, courses);	
-	groupDao.addAll(groups);
-	courseDao.addAll(courses);
-	studentDao.addAll(students);
+	generateGroups(groupDao);
+	generateCourses(courseDao);
+	generateStudents(studentDao);
+	assignStudentsToGroup(studentDao, groupDao);	
+	assignStudentsToCourses(studentDao, courseDao);		
     }
 
-    private List<Group> generateGroups() {
+    private void generateGroups(Dao<Group> groupDao) {
 	List<GroupNames> groupsNames = Arrays.asList(GroupNames.values());
 	List<Group> groups = new ArrayList<>();
 	for (GroupNames groupNames : groupsNames) {
 	    groups.add(new Group(groupNames.getTitle()));
 	}
-	return groups;
+	groupDao.addAll(groups);
     }
 
-    private List<Course> generateCourses() {
+    private void generateCourses(Dao<Course> courseDao) {
 	List<CourseNames> coursesNames = Arrays.asList(CourseNames.values());
 	List<Course> courses = new ArrayList<>();
 	for (CourseNames courseNames : coursesNames) {
 	    courses.add(new Course(courseNames.getTitle()));
 	}
-	return courses;
+	courseDao.addAll(courses);
     }
     
-    private List<Student> generateStudents(){
+    private void generateStudents(Dao<Student> studentDao){
 	List<FirstNames> firstNames = new ArrayList<>();
 	for(int i = 0; i < 10; i++) {	    
 	    firstNames.addAll(Arrays.asList(FirstNames.values()));
@@ -57,10 +54,12 @@ public class TestDataGenerator {
 	for(int i = 1; i <= 200; i++) {
 	    students.add(new Student(firstNames.get(i-1).getTitle(), lastNames.get(i-1).getTitle()));
 	}	
-	return students;
+	studentDao.addAll(students);
     }
      
-    private void assignStudentsToGroup(List<Student> students, List<Group> groups) {
+    private void assignStudentsToGroup(Dao<Student> studentDao, Dao<Group> groupDao) {
+	List<Student> students = studentDao.selectAll();
+	List<Group> groups = groupDao.selectAll();
 	int capasity = calculateGroupCapasity();
 	int fullness = 0;
 	int index = 0;
@@ -76,9 +75,12 @@ public class TestDataGenerator {
 	    student.setGroup(groups.get(index));
 	    fullness++;
 	}
+	((StudentDao)studentDao).assignStudentsToGroup(students);
     }
 
-    private void assignStudentsToCourses(List<Student> students, List<Course> courses) {
+    private void assignStudentsToCourses(Dao<Student> studentDao, Dao<Course> courseDao) {
+	List<Student> students = studentDao.selectAll();
+	List<Course> courses = courseDao.selectAll();
 	int courseQuantity;
 	int index;
 	List<Course> studentCources;
@@ -92,7 +94,8 @@ public class TestDataGenerator {
 		}
 	    }
 	    student.setCources(studentCources);
-	}	
+	}
+	((StudentDao)studentDao).assignStudentsToCourses(students);
     }
 
     private int calculateGroupCapasity() {
