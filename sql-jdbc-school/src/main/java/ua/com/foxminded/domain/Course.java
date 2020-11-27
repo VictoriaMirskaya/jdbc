@@ -57,7 +57,7 @@ public class Course {
 
     @Override
     public String toString() {      
-        return "{id=" + this.id + ", name=" + this.name +"}";
+        return "{id=" + this.id + ", name=" + this.name +"}\n";
     }
     
 }

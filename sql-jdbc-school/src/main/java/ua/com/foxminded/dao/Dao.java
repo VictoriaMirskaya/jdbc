@@ -4,10 +4,10 @@ import java.util.List;
 
 public interface Dao<T> {  
 
-    List<T> find(String condition, Object parameterValue);
-  
-    void add(List<T> t);
+    List<T> selectAll();
     
-    void delete(List<T> t);
+    void addAll(List<T> t);
+    
+    void deleteById(int id);
 
 }

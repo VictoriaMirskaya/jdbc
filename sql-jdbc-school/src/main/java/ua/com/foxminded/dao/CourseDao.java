@@ -9,12 +9,13 @@ import ua.com.foxminded.domain.Course;
 public class CourseDao implements Dao<Course> {
 
     @Override
-    public List<Course> find(String condition, Object parameterValue) {
-	return null;	
+    public List<Course> selectAll() {
+	// TODO Auto-generated method stub
+	return null;
     }
-
+    
     @Override
-    public void add(List<Course> courses) {
+    public void addAll(List<Course> courses) {
 	final String sql = "INSERT INTO courses (course_name) VALUES (?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -31,8 +32,8 @@ public class CourseDao implements Dao<Course> {
     }
 
     @Override
-    public void delete(List<Course> courses) {
+    public void deleteById(int id) {
 	
-    }
+    }  
 
 }

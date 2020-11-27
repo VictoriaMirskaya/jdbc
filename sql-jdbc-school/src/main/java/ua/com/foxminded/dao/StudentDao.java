@@ -13,16 +13,13 @@ import ua.com.foxminded.domain.Student;
 public class StudentDao implements Dao<Student> {
 
     @Override
-    public List<Student> find(String condition, Object parameterValue) {
-	List<Student> students = new ArrayList<>();
-	if (condition.equals("Find all students related to course with given name")) {
-	    findStudentsRelatedToCourseWithGivenName(students, (String)parameterValue);
-	}
-	return students;
+    public List<Student> selectAll() {
+	// TODO Auto-generated method stub
+	return null;
     }
-
+    
     @Override
-    public void add(List<Student> students) {	
+    public void addAll(List<Student> students) {	
 	final String sql = "INSERT INTO students (first_name, last_name, group_id) VALUES (?, ?, ?);"
 	                 + "INSERT INTO students_courses (course_id, student_id) VALUES (?, ?)";
 	try (Connection connection = DBCPDataSource.getConnection();
@@ -53,33 +50,21 @@ public class StudentDao implements Dao<Student> {
     }
 
     @Override
-    public void delete(List<Student> students) {
+    public void deleteById(int id) {
 	final String sql = "DELETE FROM students WHERE student_id = ?;"
-		         + "DELETE FROM students_courses WHERE course_id = ? AND student_id = ?";
+		         + "DELETE FROM students_courses WHERE student_id = ?";
 	try (Connection connection = DBCPDataSource.getConnection();
-		PreparedStatement statement = connection.prepareStatement(sql)) {
-		for (Student student : students) {
-		    statement.setInt(1, student.getId());
-		    statement.addBatch();
-		}
-		List<Course> cources;
-		for (Student student : students) {
-		    cources = student.getCources();
-		    if (cources != null) {
-			for (Course course : cources) {
-			    statement.setInt(2, course.getId());
-			    statement.setInt(3, student.getId());
-			    statement.addBatch();
-			}
-		    }
-		}
-		statement.executeBatch();
+		PreparedStatement statement = connection.prepareStatement(sql)) {		
+		statement.setInt(1, id);		
+		statement.setInt(2, id);
+		statement.execute();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
     }
     
-    private List<Student> findStudentsRelatedToCourseWithGivenName(List<Student> students, String courseName) {
+    public List<Student> findStudentsRelatedToCourseWithGivenName(String courseName) {
+	List<Student> students = new ArrayList<>();
 	final String sql = "" + courseName;
 	try (Connection connection = DBCPDataSource.getConnection();
 		Statement statement = connection.createStatement();
@@ -94,4 +79,12 @@ public class StudentDao implements Dao<Student> {
 	return students;
     }
 
+    public void addStudentToCourse(int studentId, int courseId) {
+
+    }
+
+    public void removeStudentFromCourse(int studentId, int courseId) {
+
+    }
+    
 }

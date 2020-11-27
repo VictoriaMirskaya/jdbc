@@ -19,9 +19,9 @@ public class TestDataGenerator {
 	List<Student> students = generateStudents();
 	assignStudentsToGroup(students, groups);
 	assignStudentsToCourses(students, courses);	
-	groupDao.add(groups);
-	courseDao.add(courses);
-	studentDao.add(students);
+	groupDao.addAll(groups);
+	courseDao.addAll(courses);
+	studentDao.addAll(students);
     }
 
     private List<Group> generateGroups() {
