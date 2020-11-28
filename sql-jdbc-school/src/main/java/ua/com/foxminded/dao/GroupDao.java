@@ -15,7 +15,7 @@ public class GroupDao implements Dao<Group> {
     @Override
     public List<Group> selectAll() throws SQLException {
 	List<Group> groups = new ArrayList<>();
-	final String sql = "SELECT groups.group_id, groups.group_name FROM groups";
+	final String sql = "SELECT g.group_id, g.group_name FROM groups g";
 	try (Connection connection = DBCPDataSource.getConnection();
 		Statement statement = connection.createStatement();
 		ResultSet rs = statement.executeQuery(sql)) {

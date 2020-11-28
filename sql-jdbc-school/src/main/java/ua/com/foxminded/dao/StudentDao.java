@@ -16,7 +16,7 @@ public class StudentDao implements Dao<Student> {
     @Override
     public List<Student> selectAll() throws SQLException {
 	List<Student> students = new ArrayList<>();
-	final String sql = "SELECT students.student_id, students.first_name, students.last_name FROM students";
+	final String sql = "SELECT s.student_id, s.first_name, s.last_name FROM students s";
 	try (Connection connection = DBCPDataSource.getConnection();
 		Statement statement = connection.createStatement();
 		ResultSet rs = statement.executeQuery(sql)) {

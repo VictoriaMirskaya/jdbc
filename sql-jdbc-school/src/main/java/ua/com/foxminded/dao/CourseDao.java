@@ -15,7 +15,7 @@ public class CourseDao implements Dao<Course> {
     @Override
     public List<Course> selectAll() throws SQLException {
 	List<Course> courses = new ArrayList<>();
-	final String sql = "SELECT courses.course_id, courses.course_name, courses.course_description FROM courses";
+	final String sql = "SELECT c.course_id, c.course_name, c.course_description FROM courses c";
 	try (Connection connection = DBCPDataSource.getConnection();
 		Statement statement = connection.createStatement();
 		ResultSet rs = statement.executeQuery(sql)) {
