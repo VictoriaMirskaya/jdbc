@@ -31,7 +31,6 @@ public class Main {
 	    System.err.println(e.getMessage());
 	} catch (RuntimeException e) {
 	    System.err.println(UserMessages.SYSTEM_ERROR);
-	    e.printStackTrace();
 	}
     }
 

@@ -21,7 +21,7 @@ public class SQLTablesCreator implements TablesCreator {
 	} catch (IOException e) {
 	    throw new IOException(String.format(UserMessages.ERROR_FILE_READING_MASK, FILE_SCRIPT_NAME));
 	} catch (SQLException e) {
-	    throw new SQLException(String.format(UserMessages.SQL_EXCEPTION_MASK, FILE_SCRIPT_NAME));
+	    throw new SQLException(String.format(UserMessages.ERROR_SCRIPT_EXECUTION_MASK, FILE_SCRIPT_NAME));
 	}
     }
 

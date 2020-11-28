@@ -1,5 +1,6 @@
 package ua.com.foxminded.ui;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -13,7 +14,7 @@ import ua.com.foxminded.domain.Student;
 
 public class ConsoleMenu {
 
-    public void show(Dao<Course> courseDao, Dao<Group> groupDao, Dao<Student> studentDao) {
+    public void show(Dao<Course> courseDao, Dao<Group> groupDao, Dao<Student> studentDao) throws SQLException {
 	try (Scanner scanner = new Scanner(System.in)) {
 	    boolean quitApplication = false;
 	    do {
@@ -43,7 +44,7 @@ public class ConsoleMenu {
 	System.out.println(UserMessages.DELIMITER);
     }
     
-    private static void printParametersAndResults(Scanner scanner, String selectItem, Dao<Course> courseDao, Dao<Group> groupDao, Dao<Student> studentDao) {
+    private static void printParametersAndResults(Scanner scanner, String selectItem, Dao<Course> courseDao, Dao<Group> groupDao, Dao<Student> studentDao) throws SQLException {
 	if (selectItem.equals("a")) {
 	    System.out.println("Enter count of student:");
 	    System.out.println(((GroupDao)groupDao).findGroupsWhithLessOrEqualsStudentCount(scanner.nextInt()));

@@ -7,12 +7,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import ua.com.foxminded.UserMessages;
 import ua.com.foxminded.domain.Course;
 
 public class CourseDao implements Dao<Course> {
 
     @Override
-    public List<Course> selectAll() {
+    public List<Course> selectAll() throws SQLException {
 	List<Course> courses = new ArrayList<>();
 	final String sql = "SELECT courses.course_id, courses.course_name, courses.course_description FROM courses";
 	try (Connection connection = DBCPDataSource.getConnection();
@@ -26,13 +27,13 @@ public class CourseDao implements Dao<Course> {
 		courses.add(course);
 	    }
 	} catch (SQLException e) {
-	    e.printStackTrace();
+	    throw new SQLException(UserMessages.ERROR_GETTING_DATA_FROM_DATABASE);
 	}
 	return courses;
     }
     
     @Override
-    public void addAll(List<Course> courses) {
+    public void addAll(List<Course> courses) throws SQLException {
 	final String sql = "INSERT INTO courses (course_name) VALUES (?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -44,19 +45,19 @@ public class CourseDao implements Dao<Course> {
 	    }
 	    statement.executeBatch();
 	} catch (SQLException e) {
-	    e.printStackTrace();
+	    throw new SQLException(UserMessages.ERROR_ADDING_DATA_TO_DATABASE);
 	}
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(int id) throws SQLException {
 	final String sql = "DELETE FROM courses WHERE course_id = ?";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
 	    statement.setInt(1, id);
 	    statement.execute();
 	} catch (SQLException e) {
-	    e.printStackTrace();
+	    throw new SQLException(UserMessages.ERROR_DELETING_DATA_FROM_DATABASE);
 	}
     }
 

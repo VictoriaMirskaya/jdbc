@@ -7,12 +7,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import ua.com.foxminded.UserMessages;
 import ua.com.foxminded.domain.Group;
 
 public class GroupDao implements Dao<Group> {
     
     @Override
-    public List<Group> selectAll() {
+    public List<Group> selectAll() throws SQLException {
 	List<Group> groups = new ArrayList<>();
 	final String sql = "SELECT groups.group_id, groups.group_name FROM groups";
 	try (Connection connection = DBCPDataSource.getConnection();
@@ -25,13 +26,13 @@ public class GroupDao implements Dao<Group> {
 		groups.add(group);
 	    }
 	} catch (SQLException e) {
-	    e.printStackTrace();
+	    throw new SQLException(UserMessages.ERROR_GETTING_DATA_FROM_DATABASE);
 	}
 	return groups;
     }
     
     @Override
-    public void addAll(List<Group> groups) {
+    public void addAll(List<Group> groups) throws SQLException {
 	final String sql = "INSERT INTO groups (group_name) VALUES (?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -43,23 +44,23 @@ public class GroupDao implements Dao<Group> {
 	    }
 	    statement.executeBatch();
 	} catch (SQLException e) {
-	    e.printStackTrace();
+	    throw new SQLException(UserMessages.ERROR_ADDING_DATA_TO_DATABASE);
 	}
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(int id) throws SQLException {
 	final String sql = "DELETE FROM groups WHERE group_id = ?";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
 	    statement.setInt(1, id);
 	    statement.execute();
 	} catch (SQLException e) {
-	    e.printStackTrace();
+	    throw new SQLException(UserMessages.ERROR_DELETING_DATA_FROM_DATABASE);
 	}
     }
     
-    public List<Group> findGroupsWhithLessOrEqualsStudentCount(int count) {
+    public List<Group> findGroupsWhithLessOrEqualsStudentCount(int count) throws SQLException {
 	List<Group> groups = new ArrayList<>();
 	final String sql = "SELECT students.group_id, groups.group_name FROM students "
 		+ "JOIN groups ON students.group_id = groups.group_id "
@@ -75,7 +76,7 @@ public class GroupDao implements Dao<Group> {
 		groups.add(group);
 	    }
 	} catch (SQLException e) {
-	    e.printStackTrace();
+	    throw new SQLException(UserMessages.ERROR_GETTING_DATA_FROM_DATABASE);
 	}
 	return groups;
     }

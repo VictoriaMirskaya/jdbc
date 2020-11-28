@@ -7,13 +7,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import ua.com.foxminded.UserMessages;
 import ua.com.foxminded.domain.Course;
 import ua.com.foxminded.domain.Student;
 
 public class StudentDao implements Dao<Student> {
 
     @Override
-    public List<Student> selectAll() {
+    public List<Student> selectAll() throws SQLException {
 	List<Student> students = new ArrayList<>();
 	final String sql = "SELECT students.student_id, students.first_name, students.last_name FROM students";
 	try (Connection connection = DBCPDataSource.getConnection();
@@ -26,13 +27,13 @@ public class StudentDao implements Dao<Student> {
 		students.add(student);
 	    }
 	} catch (SQLException e) {
-	    e.printStackTrace();
+	    throw new SQLException(UserMessages.ERROR_GETTING_DATA_FROM_DATABASE);
 	}
 	return students;
     }
     
     @Override
-    public void addAll(List<Student> students) {	
+    public void addAll(List<Student> students) throws SQLException {	
 	final String sql = "INSERT INTO students (first_name, last_name) VALUES (?, ?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -45,12 +46,12 @@ public class StudentDao implements Dao<Student> {
 		}
 		statement.executeBatch();
 	} catch (SQLException e) {
-	    e.printStackTrace();
+	    throw new SQLException(UserMessages.ERROR_ADDING_DATA_TO_DATABASE);
 	}
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(int id) throws SQLException {
 	final String sql = "DELETE FROM students WHERE student_id = ?;"
 		         + "DELETE FROM students_courses WHERE student_id = ?";
 	try (Connection connection = DBCPDataSource.getConnection();
@@ -59,11 +60,11 @@ public class StudentDao implements Dao<Student> {
 	    statement.setInt(2, id);
 	    statement.execute();
 	} catch (SQLException e) {
-	    e.printStackTrace();
+	    throw new SQLException(UserMessages.ERROR_DELETING_DATA_FROM_DATABASE);
 	}
     }
     
-    public void assignStudentsToGroup(List<Student> students) {
+    public void assignStudentsToGroup(List<Student> students) throws SQLException {
 	final String sql = "UPDATE students SET group_id = ? WHERE student_id = ?";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -76,11 +77,11 @@ public class StudentDao implements Dao<Student> {
 	    }
 	    statement.executeBatch();
 	} catch (SQLException e) {
-	    e.printStackTrace();
+	    throw new SQLException(UserMessages.ERROR_ADDING_DATA_TO_DATABASE);
 	}
     }
     
-    public void assignStudentsToCourses(List<Student> students) {
+    public void assignStudentsToCourses(List<Student> students) throws SQLException {
 	final String sql = "INSERT INTO students_courses (course_id, student_id) VALUES (?, ?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -97,11 +98,11 @@ public class StudentDao implements Dao<Student> {
 	    }
 	    statement.executeBatch();
 	} catch (SQLException e) {
-	    e.printStackTrace();
+	    throw new SQLException(UserMessages.ERROR_ADDING_DATA_TO_DATABASE);
 	}
     }
     
-    public List<Student> findStudentsRelatedToCourseWithGivenName(String courseName) {
+    public List<Student> findStudentsRelatedToCourseWithGivenName(String courseName) throws SQLException {
 	List<Student> students = new ArrayList<>();
 	final String sql = "SELECT students.student_id, students.first_name, students.last_name, courses.course_name FROM courses"
 		         + " JOIN students_courses ON courses.course_id = students_courses.course_id" 
@@ -118,28 +119,28 @@ public class StudentDao implements Dao<Student> {
 		students.add(student);
 	    }
 	} catch (SQLException e) {
-	    e.printStackTrace();
+	    throw new SQLException(UserMessages.ERROR_GETTING_DATA_FROM_DATABASE);
 	}
 	return students;
     }
 
-    public void addStudentToCourse(int studentId, int courseId) {
+    public void addStudentToCourse(int studentId, int courseId) throws SQLException {
 	final String sql = "INSERT INTO students_courses (course_id, student_id) VALUES (" + courseId + "," + studentId + ")";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
 	    statement.execute();
 	} catch (SQLException e) {
-	    e.printStackTrace();
+	    throw new SQLException(UserMessages.ERROR_ADDING_DATA_TO_DATABASE);
 	}
     }
     
-    public void removeStudentFromCourse(int studentId, int courseId) {
+    public void removeStudentFromCourse(int studentId, int courseId) throws SQLException {
 	final String sql = "DELETE FROM students_courses WHERE course_id = " + courseId + " AND student_id = " + studentId;
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
 	    statement.execute();
 	} catch (SQLException e) {
-	    e.printStackTrace();
+	    throw new SQLException(UserMessages.ERROR_DELETING_DATA_FROM_DATABASE);
 	}
     }
     
