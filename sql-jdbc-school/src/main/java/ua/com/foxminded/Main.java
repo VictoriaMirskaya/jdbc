@@ -15,15 +15,11 @@ import ua.com.foxminded.ui.ConsoleMenu;
 
 public class Main {
 
-    private static Dao<Course> courseDao;
-    private static Dao<Group> groupDao;
-    private static Dao<Student> studentDao;
-
     public static void main(String[] args) {
-	courseDao = new CourseDao();
-	groupDao = new GroupDao();
-	studentDao = new StudentDao();
 	try {
+	    Dao<Course> courseDao = new CourseDao();
+	    Dao<Group> groupDao = new GroupDao();
+	    Dao<Student> studentDao = new StudentDao();
 	    new SQLTablesCreator().createTables();
 	    new TestDataGenerator().generateTestData(courseDao, groupDao, studentDao);
 	    new ConsoleMenu().show(courseDao, groupDao, studentDao);
