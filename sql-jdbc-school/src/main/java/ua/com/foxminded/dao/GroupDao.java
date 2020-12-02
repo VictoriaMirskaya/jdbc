@@ -1,5 +1,6 @@
 package ua.com.foxminded.dao;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +14,7 @@ import ua.com.foxminded.domain.Group;
 public class GroupDao implements Dao<Group> {
     
     @Override
-    public List<Group> selectAll() throws SQLException {
+    public List<Group> selectAll() throws SQLException, IOException {
 	List<Group> groups = new ArrayList<>();
 	final String sql = "SELECT g.group_id, g.group_name FROM groups g";
 	try (Connection connection = DBCPDataSource.getConnection();
@@ -32,15 +33,13 @@ public class GroupDao implements Dao<Group> {
     }
     
     @Override
-    public void addAll(List<Group> groups) throws SQLException {
+    public void addAll(List<Group> groups) throws SQLException, IOException {
 	final String sql = "INSERT INTO groups (group_name) VALUES (?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
 	    for (Group group : groups) {
-		if (group.getId() == 0) {
-		    statement.setString(1, group.getName());
-		    statement.addBatch();
-		}
+		statement.setString(1, group.getName());
+		statement.addBatch();
 	    }
 	    statement.executeBatch();
 	} catch (SQLException e) {
@@ -49,7 +48,7 @@ public class GroupDao implements Dao<Group> {
     }
 
     @Override
-    public void deleteById(int id) throws SQLException {
+    public void deleteById(int id) throws SQLException, IOException {
 	final String sql = "DELETE FROM groups WHERE group_id = ?";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -60,7 +59,7 @@ public class GroupDao implements Dao<Group> {
 	}
     }
     
-    public List<Group> findGroupsWhithLessOrEqualsStudentCount(int count) throws SQLException {
+    public List<Group> findGroupsWhithLessOrEqualsStudentCount(int count) throws SQLException, IOException {
 	List<Group> groups = new ArrayList<>();
 	final String sql = "SELECT students.group_id, groups.group_name FROM students "
 		+ "JOIN groups ON students.group_id = groups.group_id "

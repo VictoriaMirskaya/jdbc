@@ -1,5 +1,6 @@
 package ua.com.foxminded.dao;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +15,7 @@ public class TestDataGenerator {
     
     private final Random random = new Random();
       
-    public void generateTestData(Dao<Course> courseDao, Dao<Group> groupDao, Dao<Student> studentDao) throws SQLException {
+    public void generateTestData(Dao<Course> courseDao, Dao<Group> groupDao, Dao<Student> studentDao) throws SQLException, IOException {
 	generateGroups(groupDao);
 	generateCourses(courseDao);
 	generateStudents(studentDao);
@@ -22,7 +23,7 @@ public class TestDataGenerator {
 	assignStudentsToCourses(studentDao, courseDao);		
     }
 
-    private void generateGroups(Dao<Group> groupDao) throws SQLException {
+    private void generateGroups(Dao<Group> groupDao) throws SQLException, IOException {
 	List<GroupNames> groupsNames = Arrays.asList(GroupNames.values());
 	List<Group> groups = new ArrayList<>();
 	for (GroupNames groupNames : groupsNames) {
@@ -31,7 +32,7 @@ public class TestDataGenerator {
 	groupDao.addAll(groups);
     }
 
-    private void generateCourses(Dao<Course> courseDao) throws SQLException {
+    private void generateCourses(Dao<Course> courseDao) throws SQLException, IOException {
 	List<CourseNames> coursesNames = Arrays.asList(CourseNames.values());
 	List<Course> courses = new ArrayList<>();
 	for (CourseNames courseNames : coursesNames) {
@@ -40,7 +41,7 @@ public class TestDataGenerator {
 	courseDao.addAll(courses);
     }
     
-    private void generateStudents(Dao<Student> studentDao) throws SQLException{
+    private void generateStudents(Dao<Student> studentDao) throws SQLException, IOException{
 	List<FirstNames> firstNames = new ArrayList<>();
 	for(int i = 0; i < 10; i++) {	    
 	    firstNames.addAll(Arrays.asList(FirstNames.values()));
@@ -58,7 +59,7 @@ public class TestDataGenerator {
 	studentDao.addAll(students);
     }
      
-    private void assignStudentsToGroup(Dao<Student> studentDao, Dao<Group> groupDao) throws SQLException {
+    private void assignStudentsToGroup(Dao<Student> studentDao, Dao<Group> groupDao) throws SQLException, IOException {
 	List<Student> students = studentDao.selectAll();
 	List<Group> groups = groupDao.selectAll();
 	int capasity = calculateGroupCapasity();
@@ -79,7 +80,7 @@ public class TestDataGenerator {
 	((StudentDao)studentDao).assignStudentsToGroup(students);
     }
 
-    private void assignStudentsToCourses(Dao<Student> studentDao, Dao<Course> courseDao) throws SQLException {
+    private void assignStudentsToCourses(Dao<Student> studentDao, Dao<Course> courseDao) throws SQLException, IOException {
 	List<Student> students = studentDao.selectAll();
 	List<Course> courses = courseDao.selectAll();
 	int courseQuantity;

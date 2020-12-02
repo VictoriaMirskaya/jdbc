@@ -1,5 +1,6 @@
 package ua.com.foxminded.dao;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +14,7 @@ import ua.com.foxminded.domain.Course;
 public class CourseDao implements Dao<Course> {
 
     @Override
-    public List<Course> selectAll() throws SQLException {
+    public List<Course> selectAll() throws SQLException, IOException {
 	List<Course> courses = new ArrayList<>();
 	final String sql = "SELECT c.course_id, c.course_name, c.course_description FROM courses c";
 	try (Connection connection = DBCPDataSource.getConnection();
@@ -33,15 +34,13 @@ public class CourseDao implements Dao<Course> {
     }
     
     @Override
-    public void addAll(List<Course> courses) throws SQLException {
+    public void addAll(List<Course> courses) throws SQLException, IOException {
 	final String sql = "INSERT INTO courses (course_name) VALUES (?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
 	    for (Course course : courses) {
-		if (course.getId() == 0) {
-		    statement.setString(1, course.getName());
-		    statement.addBatch();
-		}
+		statement.setString(1, course.getName());
+		statement.addBatch();
 	    }
 	    statement.executeBatch();
 	} catch (SQLException e) {
@@ -50,7 +49,7 @@ public class CourseDao implements Dao<Course> {
     }
 
     @Override
-    public void deleteById(int id) throws SQLException {
+    public void deleteById(int id) throws SQLException, IOException {
 	final String sql = "DELETE FROM courses WHERE course_id = ?";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
