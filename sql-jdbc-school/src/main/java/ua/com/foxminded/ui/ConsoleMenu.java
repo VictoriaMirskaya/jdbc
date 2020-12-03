@@ -31,7 +31,7 @@ public class ConsoleMenu {
 	}
     }
 
-    private static void printMenuItems() {
+    private void printMenuItems() {
 	System.out.println(UserMessages.DELIMITER);
 	System.out.println("Select one of the operations (enter the corresponding menu letter):");
 	System.out.println( 
@@ -45,21 +45,19 @@ public class ConsoleMenu {
 	System.out.println(UserMessages.DELIMITER);
     }
     
-    private static void printParametersAndResults(Scanner scanner, String selectItem, Dao<Course> courseDao, Dao<Group> groupDao, Dao<Student> studentDao) throws SQLException, IOException {
+    private void printParametersAndResults(Scanner scanner, String selectItem, Dao<Course> courseDao, Dao<Group> groupDao, Dao<Student> studentDao) throws SQLException, IOException {
 	if (selectItem.equals("a")) {
 	    System.out.println("Enter count of student:");
-	    System.out.println(((GroupDao)groupDao).findGroupsWhithLessOrEqualsStudentCount(scanner.nextInt()));
+	    System.out.println(findGroupsWhithLessOrEqualsStudentCount(groupDao, scanner.nextInt()).toString());
 	} else if (selectItem.equals("b")) {
 	    System.out.println("Enter course's name:");
-	    System.out.println(((StudentDao)studentDao).findStudentsRelatedToCourseWithGivenName(scanner.next()));
+	    System.out.println(findStudentsRelatedToCourseWithGivenName(studentDao, scanner.next()).toString());
 	} else if (selectItem.equals("c")) {
 	    System.out.println("Enter first name:");
 	    String firstName = scanner.next();
 	    System.out.println("Enter last name:"); 
 	    String lastName = scanner.next();
-	    List<Student> students = new ArrayList<>();
-	    students.add(new Student(firstName, lastName));
-	    studentDao.addAll(students);
+	    createNewStudent(studentDao, firstName, lastName);
 	    System.out.println("New student created!");    
 	} else if (selectItem.equals("d")) {
 	    System.out.println("Enter student's id:");
@@ -73,13 +71,35 @@ public class ConsoleMenu {
 	    System.out.println(courseDao.selectAll());
 	    int courseId = scanner.nextInt();
 	    if (selectItem.equals("e")) {
-		((StudentDao)studentDao).addStudentToCourse(studentId, courseId);
+		addStudentToCourse(studentDao, studentId, courseId);		
 		System.out.println("Student added to the course!");
 	    } else {
-		((StudentDao)studentDao).removeStudentFromCourse(studentId, courseId);
+		removeStudentFromCourse(studentDao, studentId, courseId);
 		System.out.println("Student removed from the course!");
 	    }
 	}
     }
+
+    private List<Group> findGroupsWhithLessOrEqualsStudentCount(Dao<Group> groupDao, int count) throws SQLException, IOException {
+	return ((GroupDao) groupDao).findGroupsWhithLessOrEqualsStudentCount(count);
+    }
+    
+    private List<Student> findStudentsRelatedToCourseWithGivenName(Dao<Student> studentDao, String coursesName) throws SQLException, IOException {
+	return ((StudentDao)studentDao).findStudentsRelatedToCourseWithGivenName(coursesName);
+    }
+    
+    private void createNewStudent(Dao<Student> studentDao, String firstName, String lastName) throws SQLException, IOException {
+	List<Student> students = new ArrayList<>();
+	students.add(new Student(firstName, lastName));
+	studentDao.addAll(students);
+    }
+    
+    private void addStudentToCourse(Dao<Student> studentDao, int studentId, int courseId) throws SQLException, IOException {
+	((StudentDao)studentDao).addStudentToCourse(studentId, courseId);
+    }
+    
+    private void removeStudentFromCourse(Dao<Student> studentDao, int studentId, int courseId) throws SQLException, IOException {
+	((StudentDao)studentDao).removeStudentFromCourse(studentId, courseId);
+    }   
     
 }
