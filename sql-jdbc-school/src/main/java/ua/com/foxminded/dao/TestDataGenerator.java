@@ -16,32 +16,35 @@ public class TestDataGenerator {
     private final Random random = new Random();
       
     public void generateTestData(Dao<Course> courseDao, Dao<Group> groupDao, Dao<Student> studentDao) throws SQLException, IOException {
-	generateGroups(groupDao);
-	generateCourses(courseDao);
-	generateStudents(studentDao);
+	List<Group> groups = generateGroups();
+	groupDao.addAll(groups);
+	List<Course> courses = generateCourses();
+	courseDao.addAll(courses);
+	List<Student> students = generateStudents();
+	studentDao.addAll(students);
 	assignStudentsToGroup(studentDao, groupDao);	
 	assignStudentsToCourses(studentDao, courseDao);		
     }
 
-    private void generateGroups(Dao<Group> groupDao) throws SQLException, IOException {
+    public List<Group> generateGroups() {
 	List<GroupNames> groupsNames = Arrays.asList(GroupNames.values());
 	List<Group> groups = new ArrayList<>();
 	for (GroupNames groupNames : groupsNames) {
 	    groups.add(new Group(groupNames.getTitle()));
 	}
-	groupDao.addAll(groups);
+	return groups;
     }
 
-    private void generateCourses(Dao<Course> courseDao) throws SQLException, IOException {
+    public List<Course> generateCourses() {
 	List<CourseNames> coursesNames = Arrays.asList(CourseNames.values());
 	List<Course> courses = new ArrayList<>();
 	for (CourseNames courseNames : coursesNames) {
 	    courses.add(new Course(courseNames.getTitle()));
 	}
-	courseDao.addAll(courses);
+	return courses;	
     }
     
-    private void generateStudents(Dao<Student> studentDao) throws SQLException, IOException{
+    public List<Student> generateStudents() {
 	List<FirstNames> firstNames = new ArrayList<>();
 	for(int i = 0; i < 10; i++) {	    
 	    firstNames.addAll(Arrays.asList(FirstNames.values()));
@@ -55,11 +58,11 @@ public class TestDataGenerator {
 	List<Student> students = new ArrayList<>();
 	for(int i = 1; i <= 200; i++) {
 	    students.add(new Student(firstNames.get(i-1).getTitle(), lastNames.get(i-1).getTitle()));
-	}	
-	studentDao.addAll(students);
+	}
+	return students;		
     }
      
-    private void assignStudentsToGroup(Dao<Student> studentDao, Dao<Group> groupDao) throws SQLException, IOException {
+    public void assignStudentsToGroup(Dao<Student> studentDao, Dao<Group> groupDao) throws SQLException, IOException {
 	List<Student> students = studentDao.selectAll();
 	List<Group> groups = groupDao.selectAll();
 	int capasity = calculateGroupCapasity();
@@ -80,7 +83,7 @@ public class TestDataGenerator {
 	((StudentDao)studentDao).assignStudentsToGroup(students);
     }
 
-    private void assignStudentsToCourses(Dao<Student> studentDao, Dao<Course> courseDao) throws SQLException, IOException {
+    public void assignStudentsToCourses(Dao<Student> studentDao, Dao<Course> courseDao) throws SQLException, IOException {
 	List<Student> students = studentDao.selectAll();
 	List<Course> courses = courseDao.selectAll();
 	int courseQuantity;
@@ -131,7 +134,7 @@ public class TestDataGenerator {
 	    this.title = title;
 	}
 
-	public String getTitle() {
+	private String getTitle() {
 	    return title;
 	}
     }
@@ -155,7 +158,7 @@ public class TestDataGenerator {
 	    this.title = title;
 	}
 
-	public String getTitle() {
+	private String getTitle() {
 	    return title;
 	}
 
@@ -190,7 +193,7 @@ public class TestDataGenerator {
 	    this.title = title;
 	}
 
-	public String getTitle() {
+	private String getTitle() {
 	    return title;
 	}
 
@@ -225,7 +228,7 @@ public class TestDataGenerator {
 	    this.title = title;
 	}
 
-	public String getTitle() {
+	private String getTitle() {
 	    return title;
 	}
     }
