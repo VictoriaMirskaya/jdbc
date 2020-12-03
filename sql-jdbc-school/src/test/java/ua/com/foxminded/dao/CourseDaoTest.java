@@ -8,15 +8,7 @@ import org.junit.jupiter.api.Test;
 import ua.com.foxminded.domain.Course;
 
 class CourseDaoTest extends AbstractDaoTest{
-    
-    @Test
-    void addAllShouldAddListCourses() throws SQLException, IOException {
-	Dao<Course> courseDao = new CourseDao();
-	List<Course> courses = new TestDataGenerator().generateCourses();
-	courseDao.addAll(courses);
-	assertEquals(courses.size(), courseDao.selectAll().size());
-    }
-    
+
     @Test
     void selectAllShouldReturnListCourses() throws SQLException, IOException {
 	Dao<Course> courseDao = new CourseDao();
