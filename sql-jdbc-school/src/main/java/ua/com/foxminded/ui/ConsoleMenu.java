@@ -81,19 +81,19 @@ public class ConsoleMenu {
 	}
     }
 
-    private String findGroupsWhithLessOrEqualsStudentCount(Dao<Group> groupDao, int count) throws SQLException, IOException {
+    public String findGroupsWhithLessOrEqualsStudentCount(Dao<Group> groupDao, int count) throws SQLException, IOException {
 	if(count < 10 || count > 30) {
 	    return "Enter correct value: from 10 to 30.";
 	}
 	List<Group> groups = ((GroupDao) groupDao).findGroupsWhithLessOrEqualsStudentCount(count);
 	if(groups.isEmpty()) {
-	    return "There are no groups with a given number of students";
+	    return "There are no groups with a given number of students.";
 	} else {
 	    return groups.toString(); 
 	}	
     }
     
-    private String findStudentsRelatedToCourseWithGivenName(Dao<Course> courseDao, Dao<Student> studentDao, String courseName) throws SQLException, IOException {
+    public String findStudentsRelatedToCourseWithGivenName(Dao<Course> courseDao, Dao<Student> studentDao, String courseName) throws SQLException, IOException {
 	if(((CourseDao)courseDao).findByName(courseName) == null) {
 	    return "There are no courses with a given name.";
 	}
@@ -105,14 +105,14 @@ public class ConsoleMenu {
 	}
     }
     
-    private String addNewStudent(Dao<Student> studentDao, String firstName, String lastName) throws SQLException, IOException {
+    public String addNewStudent(Dao<Student> studentDao, String firstName, String lastName) throws SQLException, IOException {
 	List<Student> students = new ArrayList<>();
 	students.add(new Student(firstName, lastName));
 	studentDao.addAll(students);	
 	return "New student created!";
     }
     
-    private String deleteStudentById(Dao<Student> studentDao, int studentId) throws SQLException, IOException {
+    public String deleteStudentById(Dao<Student> studentDao, int studentId) throws SQLException, IOException {
 	if(((StudentDao)studentDao).findById(studentId) == null) {
 	    return "There are no student with a given student id.";
 	}
@@ -120,7 +120,7 @@ public class ConsoleMenu {
 	return "Student deleted!";
     }
     
-    private String addStudentToCourse(Dao<Course> courseDao, Dao<Student> studentDao, int studentId, int courseId) throws SQLException, IOException {
+    public String addStudentToCourse(Dao<Course> courseDao, Dao<Student> studentDao, int studentId, int courseId) throws SQLException, IOException {
 	if(((CourseDao)courseDao).findById(courseId) == null) {
 	    return "There are no courses with a given course id.";
 	}
@@ -131,7 +131,7 @@ public class ConsoleMenu {
 	return "Student added to the course!";
     }
     
-    private String removeStudentFromCourse(Dao<Course> courseDao, Dao<Student> studentDao, int studentId, int courseId) throws SQLException, IOException {
+    public String removeStudentFromCourse(Dao<Course> courseDao, Dao<Student> studentDao, int studentId, int courseId) throws SQLException, IOException {
 	if(((CourseDao)courseDao).findById(courseId) == null) {
 	    return "There are no courses with a given course id.";
 	}

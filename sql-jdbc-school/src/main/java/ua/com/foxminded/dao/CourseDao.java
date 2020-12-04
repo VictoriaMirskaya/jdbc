@@ -62,7 +62,7 @@ public class CourseDao implements Dao<Course> {
     
     public Course findByName(String courseName) throws SQLException, IOException {
 	Course course = null;
-	final String sql = "SELECT c.course_id, c.course_name, c.course_description FROM courses c"
+	final String sql = "SELECT c.course_id, c.course_name, c.course_description FROM courses c "
 		         + "WHERE course_name = '" + courseName + "'";
 	try (Connection connection = DBCPDataSource.getConnection();
 		Statement statement = connection.createStatement();
@@ -80,7 +80,7 @@ public class CourseDao implements Dao<Course> {
     
     public Course findById(int  courseId) throws SQLException, IOException {
 	Course course = null;
-	final String sql = "SELECT c.course_id, c.course_name, c.course_description FROM courses c"
+	final String sql = "SELECT c.course_id, c.course_name, c.course_description FROM courses c "
 		         + "WHERE course_id = " + courseId;
 	try (Connection connection = DBCPDataSource.getConnection();
 		Statement statement = connection.createStatement();

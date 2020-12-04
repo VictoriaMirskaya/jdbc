@@ -115,7 +115,7 @@ public class TestDataGenerator {
 	return random.nextInt(10);
     }
     
-    private enum GroupNames{
+    public enum GroupNames{
 	
 	MO15 ("MO-15"),
 	M020 ("MO-20"),
@@ -134,12 +134,12 @@ public class TestDataGenerator {
 	    this.title = title;
 	}
 
-	private String getTitle() {
+	public String getTitle() {
 	    return title;
 	}
     }
     
-    private enum CourseNames{
+    public enum CourseNames{
 	
 	MATHEMATICS ("Mathematics"),
 	BIOLOGY ("Biology"),
@@ -158,13 +158,13 @@ public class TestDataGenerator {
 	    this.title = title;
 	}
 
-	private String getTitle() {
+	public String getTitle() {
 	    return title;
 	}
 
     }
     
-    private enum FirstNames{
+    public enum FirstNames{
 	
 	ADAM ("Adam"),
 	FELIX ("Felix"),
@@ -193,13 +193,13 @@ public class TestDataGenerator {
 	    this.title = title;
 	}
 
-	private String getTitle() {
+	public String getTitle() {
 	    return title;
 	}
 
     }
     
-    private enum LastNames{
+    public enum LastNames{
 	
 	ANDERSON ("Anderson"),
 	BROOKS ("Brooks"),
@@ -228,7 +228,7 @@ public class TestDataGenerator {
 	    this.title = title;
 	}
 
-	private String getTitle() {
+	public String getTitle() {
 	    return title;
 	}
     }
