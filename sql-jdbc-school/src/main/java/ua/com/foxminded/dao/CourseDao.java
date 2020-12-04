@@ -59,5 +59,41 @@ public class CourseDao implements Dao<Course> {
 	    throw new SQLException(UserMessages.ERROR_DELETING_DATA_FROM_DATABASE);
 	}
     }
+    
+    public Course findByName(String courseName) throws SQLException, IOException {
+	Course course = null;
+	final String sql = "SELECT c.course_id, c.course_name, c.course_description FROM courses c"
+		         + "WHERE course_name = '" + courseName + "'";
+	try (Connection connection = DBCPDataSource.getConnection();
+		Statement statement = connection.createStatement();
+		ResultSet rs = statement.executeQuery(sql)) {
+	    while (rs.next()) {
+		course = new Course(rs.getString("course_name"));
+		course.setId(rs.getInt("course_id"));
+		course.setDescription(rs.getString("course_description"));
+	    }
+	} catch (SQLException e) {
+	    throw new SQLException(UserMessages.ERROR_GETTING_DATA_FROM_DATABASE);
+	}
+	return course;
+    }
+    
+    public Course findById(int  courseId) throws SQLException, IOException {
+	Course course = null;
+	final String sql = "SELECT c.course_id, c.course_name, c.course_description FROM courses c"
+		         + "WHERE course_id = " + courseId;
+	try (Connection connection = DBCPDataSource.getConnection();
+		Statement statement = connection.createStatement();
+		ResultSet rs = statement.executeQuery(sql)) {
+	    while (rs.next()) {
+		course = new Course(rs.getString("course_name"));
+		course.setId(rs.getInt("course_id"));
+		course.setDescription(rs.getString("course_description"));
+	    }
+	} catch (SQLException e) {
+	    throw new SQLException(UserMessages.ERROR_GETTING_DATA_FROM_DATABASE);
+	}
+	return course;
+    }
 
 }

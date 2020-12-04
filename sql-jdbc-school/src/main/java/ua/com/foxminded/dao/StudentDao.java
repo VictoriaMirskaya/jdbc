@@ -143,4 +143,21 @@ public class StudentDao implements Dao<Student> {
 	}
     }
     
+    public Student findById(int studentId) throws SQLException, IOException {
+	Student student = null;
+	final String sql = "SELECT s.student_id, s.first_name, s.last_name FROM students s"
+			 + "WHERE student_id = " + studentId;
+	try (Connection connection = DBCPDataSource.getConnection();
+		Statement statement = connection.createStatement();
+		ResultSet rs = statement.executeQuery(sql)) {
+	    while (rs.next()) {
+		student = new Student(rs.getString("first_name"), rs.getString("last_name"));
+		student.setId(rs.getInt("student_id"));
+	    }
+	} catch (SQLException e) {
+	    throw new SQLException(UserMessages.ERROR_GETTING_DATA_FROM_DATABASE);
+	}
+	return student;
+    }
+    
 }

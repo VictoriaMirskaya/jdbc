@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import ua.com.foxminded.UserMessages;
+import ua.com.foxminded.dao.CourseDao;
 import ua.com.foxminded.dao.Dao;
 import ua.com.foxminded.dao.GroupDao;
 import ua.com.foxminded.dao.StudentDao;
@@ -47,59 +48,98 @@ public class ConsoleMenu {
     
     private void printParametersAndResults(Scanner scanner, String selectItem, Dao<Course> courseDao, Dao<Group> groupDao, Dao<Student> studentDao) throws SQLException, IOException {
 	if (selectItem.equals("a")) {
-	    System.out.println("Enter count of student:");
-	    System.out.println(findGroupsWhithLessOrEqualsStudentCount(groupDao, scanner.nextInt()).toString());
+	    System.out.println("Enter count of student (each group contain from 10 to 30 students):");
+	    System.out.println(findGroupsWhithLessOrEqualsStudentCount(groupDao, scanner.nextInt()));
 	} else if (selectItem.equals("b")) {
 	    System.out.println("Enter course's name:");
-	    System.out.println(findStudentsRelatedToCourseWithGivenName(studentDao, scanner.next()).toString());
+	    System.out.println(findStudentsRelatedToCourseWithGivenName(courseDao, studentDao, scanner.next()));
 	} else if (selectItem.equals("c")) {
 	    System.out.println("Enter first name:");
 	    String firstName = scanner.next();
 	    System.out.println("Enter last name:"); 
 	    String lastName = scanner.next();
-	    createNewStudent(studentDao, firstName, lastName);
-	    System.out.println("New student created!");    
+	    System.out.println(addNewStudent(studentDao, firstName, lastName));    
 	} else if (selectItem.equals("d")) {
 	    System.out.println("Enter student's id:");
-	    studentDao.deleteById(scanner.nextInt());
-	    System.out.println("Student deleted!");
-	} else if (selectItem.equals("e") || selectItem.equals("f")) {
+	    System.out.println(deleteStudentById(studentDao, scanner.nextInt()));
+	} else if (selectItem.equals("e")) {
 	    System.out.println("Choose student's id:");
 	    System.out.println(studentDao.selectAll());
 	    int studentId = scanner.nextInt();
 	    System.out.println("Choose course's id:");
 	    System.out.println(courseDao.selectAll());
 	    int courseId = scanner.nextInt();
-	    if (selectItem.equals("e")) {
-		addStudentToCourse(studentDao, studentId, courseId);		
-		System.out.println("Student added to the course!");
-	    } else {
-		removeStudentFromCourse(studentDao, studentId, courseId);
-		System.out.println("Student removed from the course!");
-	    }
+	    System.out.println(addStudentToCourse(courseDao, studentDao, studentId, courseId));
+	} else if (selectItem.equals("f")) {
+	    System.out.println("Choose student's id:");
+	    System.out.println(studentDao.selectAll());
+	    int studentId = scanner.nextInt();
+	    System.out.println("Choose course's id:");
+	    System.out.println(courseDao.selectAll());
+	    int courseId = scanner.nextInt();
+	    System.out.println(removeStudentFromCourse(courseDao, studentDao, studentId, courseId));
 	}
     }
 
-    private List<Group> findGroupsWhithLessOrEqualsStudentCount(Dao<Group> groupDao, int count) throws SQLException, IOException {
-	return ((GroupDao) groupDao).findGroupsWhithLessOrEqualsStudentCount(count);
+    private String findGroupsWhithLessOrEqualsStudentCount(Dao<Group> groupDao, int count) throws SQLException, IOException {
+	if(count < 10 || count > 30) {
+	    return "Enter correct value: from 10 to 30.";
+	}
+	List<Group> groups = ((GroupDao) groupDao).findGroupsWhithLessOrEqualsStudentCount(count);
+	if(groups.isEmpty()) {
+	    return "There are no groups with a given number of students";
+	} else {
+	    return groups.toString(); 
+	}	
     }
     
-    private List<Student> findStudentsRelatedToCourseWithGivenName(Dao<Student> studentDao, String coursesName) throws SQLException, IOException {
-	return ((StudentDao)studentDao).findStudentsRelatedToCourseWithGivenName(coursesName);
+    private String findStudentsRelatedToCourseWithGivenName(Dao<Course> courseDao, Dao<Student> studentDao, String courseName) throws SQLException, IOException {
+	if(((CourseDao)courseDao).findByName(courseName) == null) {
+	    return "There are no courses with a given name.";
+	}
+	List<Student> students = ((StudentDao)studentDao).findStudentsRelatedToCourseWithGivenName(courseName);
+	if(students.isEmpty()) {
+	    return "There are no students on course with a given name.";
+	} else {
+	    return students.toString();
+	}
     }
     
-    private void createNewStudent(Dao<Student> studentDao, String firstName, String lastName) throws SQLException, IOException {
+    private String addNewStudent(Dao<Student> studentDao, String firstName, String lastName) throws SQLException, IOException {
 	List<Student> students = new ArrayList<>();
 	students.add(new Student(firstName, lastName));
-	studentDao.addAll(students);
+	studentDao.addAll(students);	
+	return "New student created!";
     }
     
-    private void addStudentToCourse(Dao<Student> studentDao, int studentId, int courseId) throws SQLException, IOException {
+    private String deleteStudentById(Dao<Student> studentDao, int studentId) throws SQLException, IOException {
+	if(((StudentDao)studentDao).findById(studentId) == null) {
+	    return "There are no student with a given student id.";
+	}
+	studentDao.deleteById(studentId);	
+	return "Student deleted!";
+    }
+    
+    private String addStudentToCourse(Dao<Course> courseDao, Dao<Student> studentDao, int studentId, int courseId) throws SQLException, IOException {
+	if(((CourseDao)courseDao).findById(courseId) == null) {
+	    return "There are no courses with a given course id.";
+	}
+	if(((StudentDao)studentDao).findById(studentId) == null) {
+	    return "There are no student with a given student id.";
+	}
 	((StudentDao)studentDao).addStudentToCourse(studentId, courseId);
+	return "Student added to the course!";
     }
     
-    private void removeStudentFromCourse(Dao<Student> studentDao, int studentId, int courseId) throws SQLException, IOException {
+    private String removeStudentFromCourse(Dao<Course> courseDao, Dao<Student> studentDao, int studentId, int courseId) throws SQLException, IOException {
+	if(((CourseDao)courseDao).findById(courseId) == null) {
+	    return "There are no courses with a given course id.";
+	}
+	if(((StudentDao)studentDao).findById(studentId) == null) {
+	    return "There are no student with a given student id.";
+	}
 	((StudentDao)studentDao).removeStudentFromCourse(studentId, courseId);
+	return "Student removed from the course!";
     }   
     
 }
