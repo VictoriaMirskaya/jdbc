@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ua.com.foxminded.dao.TestDataGenerator.CourseNames;
 import ua.com.foxminded.dao.TestDataGenerator.FirstNames;
@@ -17,112 +18,99 @@ import ua.com.foxminded.domain.Student;
 
 class SchoolServiceTest extends AbstractTest{
 
-    SchoolService schoolService = new SchoolService();
+    CourseDao courseDao = new CourseDao();
+    GroupDao groupDao = new GroupDao();
+    StudentDao studentDao = new StudentDao();
+    SchoolService schoolService;
+    
+    @BeforeEach
+    void init() throws SQLException, IOException {
+	schoolService = new SchoolService();
+	generateData();	
+    }
 
     @Test
     void findGroupsWhithLessOrEqualsStudentCount_ShouldThrowIOException_WhenInputIncorrectValue() {
-	assertThrows(IOException.class, () -> schoolService.findGroupsWhithLessOrEqualsStudentCount(new GroupDao(), 5));
+	assertThrows(IOException.class, () -> schoolService.findGroupsWhithLessOrEqualsStudentCount(groupDao, 5));
     }
     
     @Test
     void findGroupsWhithLessOrEqualsStudentCount_ShouldReturn_EmptyList_WhenGroupsNotFound() throws SQLException, IOException {
-	generateData();	
-	assertEquals(new ArrayList<Group>(), schoolService.findGroupsWhithLessOrEqualsStudentCount(new GroupDao(), 11));	
+	assertEquals(new ArrayList<Group>(), schoolService.findGroupsWhithLessOrEqualsStudentCount(groupDao, 11));	
     }
     
     @Test
     void findGroupsWhithLessOrEqualsStudentCount_ShouldReturn_ListGoups_WhenGroupsFound() throws SQLException, IOException {
-	generateData();
-	GroupDao groupDao = new GroupDao();
 	assertEquals(groupDao.selectAll(), schoolService.findGroupsWhithLessOrEqualsStudentCount(groupDao, 20));		
     }
     
     @Test
-    void findStudentsRelatedToCourseWithGivenName_ShouldThrowIOException_WhenInputIncorrectValue() throws SQLException, IOException {
-	generateData();	
-	assertThrows(IOException.class, () -> schoolService.findStudentsRelatedToCourseWithGivenName(new CourseDao(), new StudentDao(), "TestName"));
+    void findStudentsRelatedToCourseWithGivenName_ShouldThrowIOException_WhenInputIncorrectValue() throws SQLException, IOException {	
+	assertThrows(IOException.class, () -> schoolService.findStudentsRelatedToCourseWithGivenName(courseDao, studentDao, "TestName"));
     }
     
     @Test
     void findStudentsRelatedToCourseWithGivenName_ShouldReturnEmptyListStudents_WhenStudentsNotFound() throws SQLException, IOException {
-	generateData();	
-	assertEquals(new ArrayList<Student>(), schoolService.findStudentsRelatedToCourseWithGivenName(new CourseDao(), new StudentDao(), "Biology"));
+	assertEquals(new ArrayList<Student>(), schoolService.findStudentsRelatedToCourseWithGivenName(courseDao, studentDao, "Biology"));
     }
     
     @Test
     void findStudentsRelatedToCourseWithGivenName_ShouldReturn_ListStudents_WhenStudentsFound() throws SQLException, IOException {
-	generateData();	
-	assertEquals(new StudentDao().selectAll(), schoolService.findStudentsRelatedToCourseWithGivenName(new CourseDao(), new StudentDao(), "Mathematics"));
+	assertEquals(studentDao.selectAll(), schoolService.findStudentsRelatedToCourseWithGivenName(courseDao, studentDao, "Mathematics"));
     }
     
     @Test
     void addNewStudent_ShouldAddedStudentToDB() throws SQLException, IOException {
-	StudentDao studentDao = new StudentDao(); 
 	assertTrue(schoolService.addNewStudent(studentDao, "TestFirstName", "TestLastName"));
 	assertNotNull(studentDao.findByFirstNameLastName("TestFirstName", "TestLastName"));
     }
     
     @Test
     void deleteStudentById_ShouldThrowIOException_WhenStudentNotFound() {
-	assertThrows(IOException.class, () -> schoolService.deleteStudentById(new StudentDao(), 1000));
+	assertThrows(IOException.class, () -> schoolService.deleteStudentById(studentDao, 1000));
     }
     
     @Test
     void deleteStudentById_ShouldDeleteStudentFromDB() throws SQLException, IOException {
-	generateData();	
-	StudentDao studentDao = new StudentDao(); 
 	assertNotNull(studentDao.findById(1));	
-	assertTrue(schoolService.deleteStudentById(new StudentDao(), 1));
+	assertTrue(schoolService.deleteStudentById(studentDao, 1));
 	assertNull(studentDao.findById(1));	
     }
 
     @Test
     void addStudentToCourse_ShouldThrowIOException_WhenInputIncorrectCourseId() throws SQLException, IOException {
-	generateData();
-	assertThrows(IOException.class, () -> schoolService.addStudentToCourse(new CourseDao(), new StudentDao(), 1, 100));
+	assertThrows(IOException.class, () -> schoolService.addStudentToCourse(courseDao, studentDao, 1, 100));
     }
     
     @Test
     void addStudentToCourse_ShouldThrowIOException_WhenInputIncorrectStudentId() throws SQLException, IOException {
-	generateData();
-	assertThrows(IOException.class, () -> schoolService.addStudentToCourse(new CourseDao(), new StudentDao(), 5000, 1));
+	assertThrows(IOException.class, () -> schoolService.addStudentToCourse(courseDao, studentDao, 5000, 1));
     }
     
     @Test
     void addStudentToCourse_ShouldAddStudentToCourse() throws SQLException, IOException {
-	generateData();
-	StudentDao studentDao = new StudentDao();
-	CourseDao courseDao = new CourseDao();
 	assertTrue(schoolService.addStudentToCourse(courseDao, studentDao, 1, 2));
 	assertTrue(studentDao.IsStudentOnCourse(1, 2));
     }
  
     @Test
     void removeStudentFromCourse_ShouldThrowIOException_WhenInputIncorrectCourseId() throws SQLException, IOException {
-	generateData();
-	assertThrows(IOException.class, () -> schoolService.removeStudentFromCourse(new CourseDao(), new StudentDao(), 1, 100));
+	assertThrows(IOException.class, () -> schoolService.removeStudentFromCourse(courseDao, studentDao, 1, 100));
     }
     
     @Test
     void removeStudentFromCourse_ShouldThrowIOException_WhenInputIncorrectStudentId() throws SQLException, IOException {
-	generateData();
-	assertThrows(IOException.class, () -> schoolService.removeStudentFromCourse(new CourseDao(), new StudentDao(), 5000, 1));
+	assertThrows(IOException.class, () -> schoolService.removeStudentFromCourse(courseDao, studentDao, 5000, 1));
     }
     
 	
     @Test
     void removeStudentFromCourse_ShouldRemoveStudentFromCourse() throws SQLException, IOException {
-	generateData();
-	StudentDao studentDao = new StudentDao();
-	CourseDao courseDao = new CourseDao();
 	assertTrue(schoolService.removeStudentFromCourse(courseDao, studentDao, 1, 1));
 	assertFalse(studentDao.IsStudentOnCourse(1, 1));
     }   
     
     private void generateData() throws SQLException, IOException {
-	GroupDao groupDao = new GroupDao();
-	CourseDao courseDao = new CourseDao();
-	StudentDao studentDao = new StudentDao();
 	groupDao.addAll(generateGroups(1));
 	courseDao.addAll(generateCourses(2));
 	studentDao.addAll(generateStudents(20));

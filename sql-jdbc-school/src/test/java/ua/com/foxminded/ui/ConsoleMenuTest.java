@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Scanner;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import ua.com.foxminded.dao.AbstractTest;
@@ -14,7 +15,18 @@ import ua.com.foxminded.dao.StudentDao;
 
 class ConsoleMenuTest extends AbstractTest{
 
-    ConsoleMenu consoleMenu = new ConsoleMenu();
+    CourseDao courseDao = new CourseDao();
+    GroupDao groupDao = new GroupDao();
+    StudentDao studentDao = new StudentDao();
+    ConsoleMenu consoleMenu;
+    SchoolService mockSchoolServise;
+    
+    @BeforeEach
+    void init() {
+	consoleMenu = new ConsoleMenu();
+	mockSchoolServise = Mockito.mock(SchoolService.class);   
+	consoleMenu.schoolService = mockSchoolServise; 
+    }
     
     @Test
     void produceMenuItems_ShouldReturn_MenuItems() {
@@ -33,12 +45,7 @@ class ConsoleMenuTest extends AbstractTest{
     }
    
     @Test
-    void printParametersAndResults_ShouldCallCurrentServiceMethod_WhenSelectedItemA() throws SQLException, IOException {
-	SchoolService mockSchoolServise = Mockito.mock(SchoolService.class);	
-	CourseDao courseDao = new CourseDao();
-	GroupDao groupDao = new GroupDao();
-	StudentDao studentDao = new StudentDao();
-	consoleMenu.schoolService = mockSchoolServise; 
+    void printParametersAndResults_ShouldCallCurrentServiceMethod_WhenSelectedItemA() throws SQLException, IOException {	
 	consoleMenu.printParametersAndResults(new Scanner("15"), "a", courseDao, groupDao, studentDao);
 	Mockito.verify(mockSchoolServise).findGroupsWhithLessOrEqualsStudentCount(groupDao, 15);
 		
@@ -46,11 +53,6 @@ class ConsoleMenuTest extends AbstractTest{
     
     @Test
     void printParametersAndResults_ShouldCallCurrentServiceMethod_WhenSelectedItemB() throws SQLException, IOException {
-	SchoolService mockSchoolServise = Mockito.mock(SchoolService.class);	
-	CourseDao courseDao = new CourseDao();
-	GroupDao groupDao = new GroupDao();
-	StudentDao studentDao = new StudentDao();
-	consoleMenu.schoolService = mockSchoolServise; 
 	consoleMenu.printParametersAndResults(new Scanner("Art"), "b", courseDao, groupDao, studentDao);
 	Mockito.verify(mockSchoolServise).findStudentsRelatedToCourseWithGivenName(courseDao, studentDao, "Art");
 		
@@ -58,11 +60,6 @@ class ConsoleMenuTest extends AbstractTest{
     
     @Test
     void printParametersAndResults_ShouldCallCurrentServiceMethod_WhenSelectedItemC() throws SQLException, IOException {
-	SchoolService mockSchoolServise = Mockito.mock(SchoolService.class);	
-	CourseDao courseDao = new CourseDao();
-	GroupDao groupDao = new GroupDao();
-	StudentDao studentDao = new StudentDao();
-	consoleMenu.schoolService = mockSchoolServise; 
 	consoleMenu.printParametersAndResults(new Scanner("TestFirstName TestLastName"), "c", courseDao, groupDao, studentDao);
 	Mockito.verify(mockSchoolServise).addNewStudent(studentDao, "TestFirstName", "TestLastName");
 		
@@ -70,11 +67,6 @@ class ConsoleMenuTest extends AbstractTest{
     
     @Test
     void printParametersAndResults_ShouldCallCurrentServiceMethod_WhenSelectedItemD() throws SQLException, IOException {
-	SchoolService mockSchoolServise = Mockito.mock(SchoolService.class);	
-	CourseDao courseDao = new CourseDao();
-	GroupDao groupDao = new GroupDao();
-	StudentDao studentDao = new StudentDao();
-	consoleMenu.schoolService = mockSchoolServise; 
 	consoleMenu.printParametersAndResults(new Scanner("1"), "d", courseDao, groupDao, studentDao);
 	Mockito.verify(mockSchoolServise).deleteStudentById(studentDao, 1);
 		
@@ -82,11 +74,6 @@ class ConsoleMenuTest extends AbstractTest{
     
     @Test
     void printParametersAndResults_ShouldCallCurrentServiceMethod_WhenSelectedItemE() throws SQLException, IOException {
-	SchoolService mockSchoolServise = Mockito.mock(SchoolService.class);	
-	CourseDao courseDao = new CourseDao();
-	GroupDao groupDao = new GroupDao();
-	StudentDao studentDao = new StudentDao();
-	consoleMenu.schoolService = mockSchoolServise; 
 	consoleMenu.printParametersAndResults(new Scanner("1 1"), "e", courseDao, groupDao, studentDao);
 	Mockito.verify(mockSchoolServise).addStudentToCourse(courseDao, studentDao, 1, 1);
 		
@@ -94,14 +81,8 @@ class ConsoleMenuTest extends AbstractTest{
     
     @Test
     void printParametersAndResults_ShouldCallCurrentServiceMethod_WhenSelectedItemF() throws SQLException, IOException {
-	SchoolService mockSchoolServise = Mockito.mock(SchoolService.class);	
-	CourseDao courseDao = new CourseDao();
-	GroupDao groupDao = new GroupDao();
-	StudentDao studentDao = new StudentDao();
-	consoleMenu.schoolService = mockSchoolServise; 
 	consoleMenu.printParametersAndResults(new Scanner("1 1"), "f", courseDao, groupDao, studentDao);
-	Mockito.verify(mockSchoolServise).removeStudentFromCourse(courseDao, studentDao, 1, 1);
-		
+	Mockito.verify(mockSchoolServise).removeStudentFromCourse(courseDao, studentDao, 1, 1);		
     }
     
 }
