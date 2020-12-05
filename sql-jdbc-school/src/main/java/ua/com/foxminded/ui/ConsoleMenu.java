@@ -14,11 +14,13 @@ import ua.com.foxminded.domain.Student;
 
 public class ConsoleMenu {
 
+    SchoolService schoolService = new SchoolService();
+    
     public void show(CourseDao courseDao, GroupDao groupDao, StudentDao studentDao) throws SQLException, IOException {
 	try (Scanner scanner = new Scanner(System.in)) {
 	    boolean quitApplication = false;
 	    do {
-		printMenuItems();
+		System.out.println(produceMenuItems());
 		String selectItem = scanner.next();
 		quitApplication = selectItem.equals("q");
 		if (!quitApplication) {
@@ -30,34 +32,33 @@ public class ConsoleMenu {
 	}
     }
 
-    private void printMenuItems() {
-	System.out.println(UserMessages.DELIMITER);
-	System.out.println("Select one of the operations (enter the corresponding menu letter):");
-	System.out.println( 
-	          "a. Find all groups with less or equals student count\n"
-		+ "b. Find all students related to course with given name\n"  
-		+ "c. Add new student\n"
-		+ "d. Delete student by STUDENT_ID\n" 
-		+ "e. Add a student to the course (from a list)\n"
-		+ "f. Remove the student from one of his or her courses\n"
-	        + "Quit application? (q)");
-	System.out.println(UserMessages.DELIMITER);
+    public String produceMenuItems() {
+	StringBuilder result = new StringBuilder();
+	result.append(UserMessages.DELIMITER).append(UserMessages.NEW_LINE);
+	result.append("Select one of the operations (enter the corresponding menu letter):").append(UserMessages.NEW_LINE);
+	result.append("a. Find all groups with less or equals student count").append(UserMessages.NEW_LINE);
+	result.append("b. Find all students related to course with given name").append(UserMessages.NEW_LINE);
+	result.append("c. Add new student").append(UserMessages.NEW_LINE);
+	result.append("d. Delete student by STUDENT_ID").append(UserMessages.NEW_LINE);
+	result.append("e. Add a student to the course (from a list)").append(UserMessages.NEW_LINE);
+	result.append("f. Remove the student from one of his or her courses").append(UserMessages.NEW_LINE);
+	result.append("Quit application? (q)").append(UserMessages.NEW_LINE);
+	result.append(UserMessages.DELIMITER).append(UserMessages.NEW_LINE);
+	return result.toString();
     }
     
-    private void printParametersAndResults(Scanner scanner, String selectItem, CourseDao courseDao, GroupDao groupDao, StudentDao studentDao) throws SQLException, IOException {
-	SchoolService schoolService = new SchoolService();
+    public void printParametersAndResults(Scanner scanner, String selectItem, CourseDao courseDao, GroupDao groupDao, StudentDao studentDao) throws SQLException, IOException {
 	if (selectItem.equals("a")) {
 	    System.out.println("Enter count of student (each group contain from 10 to 30 students):");
-	    List<Group> groups = schoolService.findGroupsWhithLessOrEqualsStudentCount(groupDao, scanner.nextInt());
+	    List<Group> groups = generateResultItemA(groupDao, scanner.nextInt());
 	    if (groups.isEmpty()) {
 		System.out.println("There are no groups with a given number of students.");
 	    } else {
 		System.out.println(groups.toString());
-	    }	   
+	    }
 	} else if (selectItem.equals("b")) {
 	    System.out.println("Enter course's name:");
-	    List<Student> students = schoolService.findStudentsRelatedToCourseWithGivenName(courseDao, studentDao,
-		    scanner.next());
+	    List<Student> students = generateResultItemB(courseDao, studentDao, scanner.next());
 	    if (students.isEmpty()) {
 		System.out.println("There are no students on course with a given name.");
 	    } else {
@@ -66,14 +67,14 @@ public class ConsoleMenu {
 	} else if (selectItem.equals("c")) {
 	    System.out.println("Enter first name:");
 	    String firstName = scanner.next();
-	    System.out.println("Enter last name:"); 
+	    System.out.println("Enter last name:");
 	    String lastName = scanner.next();
-	    if (schoolService.addNewStudent(studentDao, firstName, lastName)) {
+	    if (generateResultItemC(studentDao, firstName, lastName)) {
 		System.out.println("New student created!");
 	    }
 	} else if (selectItem.equals("d")) {
 	    System.out.println("Enter student's id:");
-	    if (schoolService.deleteStudentById(studentDao, scanner.nextInt())) {
+	    if (generateResultItemD(studentDao, scanner.nextInt())) {
 		System.out.println("Student deleted!");
 	    }
 	} else if (selectItem.equals("e")) {
@@ -83,7 +84,7 @@ public class ConsoleMenu {
 	    System.out.println("Choose course's id:");
 	    System.out.println(courseDao.selectAll());
 	    int courseId = scanner.nextInt();
-	    if (schoolService.addStudentToCourse(courseDao, studentDao, studentId, courseId)) {
+	    if (generateResultItemE(courseDao, studentDao, studentId, courseId)) {
 		System.out.println("Student added to the course!");
 	    }
 	} else if (selectItem.equals("f")) {
@@ -91,12 +92,36 @@ public class ConsoleMenu {
 	    System.out.println(studentDao.selectAll());
 	    int studentId = scanner.nextInt();
 	    System.out.println("Choose course's id:");
-	    System.out.println(courseDao.selectAll());
+	    System.out.println(courseDao.selectAll()); // ТОЛЬКО КУРСЫ СТУДЕНТА ОТОБРАЖАТЬ
 	    int courseId = scanner.nextInt();
-	    if (schoolService.removeStudentFromCourse(courseDao, studentDao, studentId, courseId)) {
+	    if (generateResultItemF(courseDao, studentDao, studentId, courseId)) {
 		System.out.println("Student removed from the course!");
 	    }
 	}
+    }
+    
+    private List<Group> generateResultItemA(GroupDao groupDao, int count) throws SQLException, IOException{
+	return schoolService.findGroupsWhithLessOrEqualsStudentCount(groupDao, count);
+    }
+    
+    private List<Student> generateResultItemB(CourseDao courseDao, StudentDao studentDao, String courseName) throws SQLException, IOException {
+	return schoolService.findStudentsRelatedToCourseWithGivenName(courseDao, studentDao, courseName);
+    }
+   
+    private boolean generateResultItemC(StudentDao studentDao, String firstName, String lastName) throws SQLException, IOException {
+	return schoolService.addNewStudent(studentDao, firstName, lastName);
+    }
+    
+    private boolean generateResultItemD(StudentDao studentDao, int studentId) throws SQLException, IOException {
+	return schoolService.deleteStudentById(studentDao, studentId);
+    }
+    
+    private boolean generateResultItemE(CourseDao courseDao, StudentDao studentDao, int studentId, int courseId) throws SQLException, IOException {
+	return schoolService.addStudentToCourse(courseDao, studentDao, studentId, courseId);
+    }
+    
+    private boolean generateResultItemF(CourseDao courseDao, StudentDao studentDao, int studentId, int courseId) throws SQLException, IOException {
+	return schoolService.removeStudentFromCourse(courseDao, studentDao, studentId, courseId);
     }
     
 }

@@ -17,7 +17,7 @@ import ua.com.foxminded.domain.Student;
 
 class SchoolServiceTest extends AbstractTest{
 
-    static SchoolService schoolService = new SchoolService();
+    SchoolService schoolService = new SchoolService();
 
     @Test
     void findGroupsWhithLessOrEqualsStudentCount_ShouldThrowIOException_WhenInputIncorrectValue() {
