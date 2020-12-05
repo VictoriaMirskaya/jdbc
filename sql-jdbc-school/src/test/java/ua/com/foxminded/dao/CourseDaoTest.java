@@ -3,27 +3,48 @@ package ua.com.foxminded.dao;
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ua.com.foxminded.domain.Course;
 
-class CourseDaoTest extends AbstractDaoTest{
+class CourseDaoTest {
+    
+    CourseDao courseDao = new CourseDao();
+    TestTools testTools = new TestTools();
+    
+    @BeforeEach
+    void init() throws IOException, SQLException {
+	testTools.createTables();
+	courseDao.addAll(testTools.generateCourses(5));
+    }
 
     @Test
-    void selectAllShouldReturnListCourses() throws SQLException, IOException {
-	Dao<Course> courseDao = new CourseDao();
-	List<Course> courses = new TestDataGenerator().generateCourses();
-	courseDao.addAll(courses);
-	assertEquals(courses.size(), courseDao.selectAll().size());
+    void selectAll_ShouldReturnListCourses() throws SQLException, IOException {	
+	assertIterableEquals(testTools.generateCourses(5), courseDao.selectAll());	
+    }
+
+    @Test
+    void findById_ShouldReturnCourseById() throws SQLException, IOException {
+	Course expected = new Course("Mathematics");
+	expected.setId(1);
+	assertEquals(expected, courseDao.findById(1));	
     }
     
     @Test
-    void deleteByIdShouldDeleteCourseById() throws SQLException, IOException {
-	Dao<Course> courseDao = new CourseDao();
-	List<Course> courses = new TestDataGenerator().generateCourses();
-	courseDao.addAll(courses);
+    void deleteById_ShouldDeleteCourseById() throws SQLException, IOException {
+	int countBeforeDelete = courseDao.selectAll().size(); 
+	assertNotNull(courseDao.findById(1));
 	courseDao.deleteById(1);
-	assertEquals(courses.size() - 1, courseDao.selectAll().size());
+	assertNull(courseDao.findById(1));
+	int countAfterDelete = courseDao.selectAll().size(); 
+	assertEquals(countBeforeDelete - 1, countAfterDelete);
+    }
+    
+    @Test
+    void findByName_ShouldReturnCourseByName() throws SQLException, IOException {
+	Course expected = new Course("Biology");
+	expected.setId(2);
+	assertEquals(expected, courseDao.findByName("Biology"));	
     }
 
 }

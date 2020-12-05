@@ -92,7 +92,7 @@ public class ConsoleMenu {
 	    System.out.println(studentDao.selectAll());
 	    int studentId = scanner.nextInt();
 	    System.out.println("Choose course's id:");
-	    System.out.println(courseDao.selectAll()); // ТОЛЬКО КУРСЫ СТУДЕНТА ОТОБРАЖАТЬ
+	    System.out.println(courseDao.selectAll());
 	    int courseId = scanner.nextInt();
 	    if (generateResultItemF(courseDao, studentDao, studentId, courseId)) {
 		System.out.println("Student removed from the course!");

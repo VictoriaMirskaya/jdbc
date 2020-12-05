@@ -8,11 +8,10 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import ua.com.foxminded.UserMessages;
 
-public class SQLTablesCreator implements TablesCreator {
+public class SQLTablesCreator {
 
     private static final String FILE_SCRIPT_NAME = "CreateTablesScript.sql";
     
-    @Override
     public void createTables() throws IOException, SQLException {
 	try (Connection connection = DBCPDataSource.getConnection();
 		Statement statement = connection.createStatement()) {

@@ -10,6 +10,8 @@ public interface Dao<T> {
     
     void addAll(List<T> t) throws SQLException, IOException;
     
+    T findById(int id) throws SQLException, IOException;
+    
     void deleteById(int id) throws SQLException, IOException;
 
 }

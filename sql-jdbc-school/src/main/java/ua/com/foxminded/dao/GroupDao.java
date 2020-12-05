@@ -48,6 +48,24 @@ public class GroupDao implements Dao<Group> {
     }
 
     @Override
+    public Group findById(int groupId) throws SQLException, IOException {
+	Group group = null;
+	final String sql = "SELECT g.group_id, g.group_name, FROM groups g "
+		         + "WHERE g.group_id = " + groupId;
+	try (Connection connection = DBCPDataSource.getConnection();
+		Statement statement = connection.createStatement();
+		ResultSet rs = statement.executeQuery(sql)) {
+	    while (rs.next()) {
+		group = new Group(rs.getString("group_name"));
+		group.setId(rs.getInt("group_id"));
+	    }
+	} catch (SQLException e) {
+	    throw new SQLException(UserMessages.ERROR_GETTING_DATA_FROM_DATABASE);
+	}
+	return group;
+    }
+    
+    @Override
     public void deleteById(int id) throws SQLException, IOException {
 	final String sql = "DELETE FROM groups WHERE group_id = ?";
 	try (Connection connection = DBCPDataSource.getConnection();

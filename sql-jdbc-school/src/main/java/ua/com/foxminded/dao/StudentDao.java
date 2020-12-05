@@ -48,6 +48,24 @@ public class StudentDao implements Dao<Student> {
 	    throw new SQLException(UserMessages.ERROR_ADDING_DATA_TO_DATABASE);
 	}
     }
+    
+    @Override
+    public Student findById(int studentId) throws SQLException, IOException {
+	Student student = null;
+	final String sql = "SELECT s.student_id, s.first_name, s.last_name FROM students s "
+			 + "WHERE s.student_id = " + studentId;
+	try (Connection connection = DBCPDataSource.getConnection();
+		Statement statement = connection.createStatement();
+		ResultSet rs = statement.executeQuery(sql)) {
+	    while (rs.next()) {
+		student = new Student(rs.getString("first_name"), rs.getString("last_name"));
+		student.setId(rs.getInt("student_id"));
+	    }
+	} catch (SQLException e) {
+	    throw new SQLException(UserMessages.ERROR_GETTING_DATA_FROM_DATABASE);
+	}
+	return student;
+    }
 
     @Override
     public void deleteById(int id) throws SQLException, IOException {
@@ -142,24 +160,7 @@ public class StudentDao implements Dao<Student> {
 	    throw new SQLException(UserMessages.ERROR_DELETING_DATA_FROM_DATABASE);
 	}
     }
-    
-    public Student findById(int studentId) throws SQLException, IOException {
-	Student student = null;
-	final String sql = "SELECT s.student_id, s.first_name, s.last_name FROM students s "
-			 + "WHERE s.student_id = " + studentId;
-	try (Connection connection = DBCPDataSource.getConnection();
-		Statement statement = connection.createStatement();
-		ResultSet rs = statement.executeQuery(sql)) {
-	    while (rs.next()) {
-		student = new Student(rs.getString("first_name"), rs.getString("last_name"));
-		student.setId(rs.getInt("student_id"));
-	    }
-	} catch (SQLException e) {
-	    throw new SQLException(UserMessages.ERROR_GETTING_DATA_FROM_DATABASE);
-	}
-	return student;
-    }
-    
+        
     public Student findByFirstNameLastName(String firstName, String lastName) throws IOException, SQLException {
 	Student student = null;
 	final String sql = "SELECT s.student_id, s.first_name, s.last_name FROM students s "
@@ -180,16 +181,31 @@ public class StudentDao implements Dao<Student> {
     public boolean IsStudentOnCourse(int studentId, int courseId) throws SQLException, IOException {
    	final String sql = "SELECT * FROM students_courses sc "
    			 + "WHERE sc.student_id = " + studentId + " AND sc.course_id = " + courseId;
-   	try (Connection connection = DBCPDataSource.getConnection();
-   		Statement statement = connection.createStatement();
-   		ResultSet rs = statement.executeQuery(sql)) {
-   	    while (rs.next()) {
-   		return true;
-   	    }
-   	} catch (SQLException e) {
-   	    throw new SQLException(UserMessages.ERROR_GETTING_DATA_FROM_DATABASE);
-   	}
-   	return false;
-       }
+	try (Connection connection = DBCPDataSource.getConnection();
+		Statement statement = connection.createStatement();
+		ResultSet rs = statement.executeQuery(sql)) {
+	    while (rs.next()) {
+		return true;
+	    }
+	} catch (SQLException e) {
+	    throw new SQLException(UserMessages.ERROR_GETTING_DATA_FROM_DATABASE);
+	}
+	return false;
+    }
+    
+    public boolean IsStudentOnGroup(int studentId, int groupId) throws SQLException, IOException {
+   	final String sql = "SELECT s.group_id FROM students s "
+   			 + "WHERE s.student_id =" + studentId + " AND s.group_id =" + groupId;
+	try (Connection connection = DBCPDataSource.getConnection();
+		Statement statement = connection.createStatement();
+		ResultSet rs = statement.executeQuery(sql)) {
+	    while (rs.next()) {
+		return true;
+	    }
+	} catch (SQLException e) {
+	    throw new SQLException(UserMessages.ERROR_GETTING_DATA_FROM_DATABASE);
+	}
+	return false;
+    }
     
 }

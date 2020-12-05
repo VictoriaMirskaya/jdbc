@@ -49,6 +49,25 @@ public class CourseDao implements Dao<Course> {
     }
 
     @Override
+    public Course findById(int  courseId) throws SQLException, IOException {
+	Course course = null;
+	final String sql = "SELECT c.course_id, c.course_name, c.course_description FROM courses c "
+		         + "WHERE c.course_id = " + courseId;
+	try (Connection connection = DBCPDataSource.getConnection();
+		Statement statement = connection.createStatement();
+		ResultSet rs = statement.executeQuery(sql)) {
+	    while (rs.next()) {
+		course = new Course(rs.getString("course_name"));
+		course.setId(rs.getInt("course_id"));
+		course.setDescription(rs.getString("course_description"));
+	    }
+	} catch (SQLException e) {
+	    throw new SQLException(UserMessages.ERROR_GETTING_DATA_FROM_DATABASE);
+	}
+	return course;
+    }
+    
+    @Override
     public void deleteById(int id) throws SQLException, IOException {
 	final String sql = "DELETE FROM courses WHERE course_id = ?";
 	try (Connection connection = DBCPDataSource.getConnection();
@@ -64,24 +83,6 @@ public class CourseDao implements Dao<Course> {
 	Course course = null;
 	final String sql = "SELECT c.course_id, c.course_name, c.course_description FROM courses c "
 		         + "WHERE course_name = '" + courseName + "'";
-	try (Connection connection = DBCPDataSource.getConnection();
-		Statement statement = connection.createStatement();
-		ResultSet rs = statement.executeQuery(sql)) {
-	    while (rs.next()) {
-		course = new Course(rs.getString("course_name"));
-		course.setId(rs.getInt("course_id"));
-		course.setDescription(rs.getString("course_description"));
-	    }
-	} catch (SQLException e) {
-	    throw new SQLException(UserMessages.ERROR_GETTING_DATA_FROM_DATABASE);
-	}
-	return course;
-    }
-    
-    public Course findById(int  courseId) throws SQLException, IOException {
-	Course course = null;
-	final String sql = "SELECT c.course_id, c.course_name, c.course_description FROM courses c "
-		         + "WHERE course_id = " + courseId;
 	try (Connection connection = DBCPDataSource.getConnection();
 		Statement statement = connection.createStatement();
 		ResultSet rs = statement.executeQuery(sql)) {
