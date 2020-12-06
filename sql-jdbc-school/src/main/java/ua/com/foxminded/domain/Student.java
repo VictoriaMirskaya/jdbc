@@ -8,7 +8,7 @@ public class Student {
     private String firstName;
     private String lastName;
     private Group group;
-    private List<Course> cources;
+    private List<Course> courses;
 
     public Student(String firstName, String lastName) {
 	this.firstName = firstName;
@@ -47,12 +47,12 @@ public class Student {
 	this.group = group;
     }
 
-    public List<Course> getCources() {
-	return cources;
+    public List<Course> getCourses() {
+	return courses;
     }
 
-    public void setCources(List<Course> cources) {
-	this.cources = cources;
+    public void setCourses(List<Course> courses) {
+	this.courses = courses;
     }
     
     @Override

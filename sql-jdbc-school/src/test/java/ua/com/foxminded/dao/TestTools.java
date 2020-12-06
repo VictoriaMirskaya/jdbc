@@ -34,7 +34,7 @@ public  class TestTools {
 	for (Student student : students) {
 	    studentCources = new ArrayList<>();
 	    studentCources.add(courses.get(0));
-	    student.setCources(studentCources);
+	    student.setCourses(studentCources);
 	}
 	studentDao.assignStudentsToCourses(students);
     }

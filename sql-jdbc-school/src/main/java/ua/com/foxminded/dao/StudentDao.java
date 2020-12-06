@@ -102,11 +102,11 @@ public class StudentDao implements Dao<Student> {
 	final String sql = "INSERT INTO students_courses (course_id, student_id) VALUES (?, ?)";
 	try (Connection connection = DBCPDataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(sql)) {
-	    List<Course> cources;
+	    List<Course> courses;
 	    for (Student student : students) {
-		cources = student.getCources();
-		if (cources != null) {
-		    for (Course course : cources) {
+		courses = student.getCourses();
+		if (courses != null) {
+		    for (Course course : courses) {
 			statement.setInt(1, course.getId());
 			statement.setInt(2, student.getId());
 			statement.addBatch();

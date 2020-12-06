@@ -89,17 +89,17 @@ public class TestDataGenerator {
 	List<Course> courses = courseDao.selectAll();
 	int courseQuantity;
 	int index;
-	List<Course> studentCources;
+	List<Course> studentCourses;
 	for (Student student : students) {
 	    courseQuantity = calculateCourseQuantity();
-	    studentCources = new ArrayList<>();
+	    studentCourses = new ArrayList<>();
 	    for(int i = 1; i <= courseQuantity; i ++) {
 		index = generateRandomCourseIndex();
-		if (!studentCources.contains(courses.get(index))) {
-		    studentCources.add(courses.get(index));
+		if (!studentCourses.contains(courses.get(index))) {
+		    studentCourses.add(courses.get(index));
 		}
 	    }
-	    student.setCources(studentCources);
+	    student.setCourses(studentCourses);
 	}
 	studentDao.assignStudentsToCourses(students);
     }
