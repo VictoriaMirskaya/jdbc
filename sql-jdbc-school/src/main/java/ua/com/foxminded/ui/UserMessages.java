@@ -1,4 +1,4 @@
-package ua.com.foxminded.servise;
+package ua.com.foxminded.ui;
 
 public final class UserMessages {
 

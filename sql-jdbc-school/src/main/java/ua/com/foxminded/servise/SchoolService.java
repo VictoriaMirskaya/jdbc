@@ -1,9 +1,13 @@
-package ua.com.foxminded.dao;
+package ua.com.foxminded.servise;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+
+import ua.com.foxminded.dao.CourseDao;
+import ua.com.foxminded.dao.GroupDao;
+import ua.com.foxminded.dao.StudentDao;
 import ua.com.foxminded.domain.Group;
 import ua.com.foxminded.domain.Student;
 

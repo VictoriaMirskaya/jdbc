@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 import ua.com.foxminded.dao.CourseDao;
 import ua.com.foxminded.dao.GroupDao;
-import ua.com.foxminded.dao.SQLTablesCreator;
 import ua.com.foxminded.dao.StudentDao;
-import ua.com.foxminded.dao.TestDataGenerator;
-import ua.com.foxminded.servise.UserMessages;
+import ua.com.foxminded.db.SQLTablesCreator;
+import ua.com.foxminded.db.init.DataGenerator;
 import ua.com.foxminded.ui.ConsoleMenu;
+import ua.com.foxminded.ui.UserMessages;
 
 public class Main {
 
@@ -18,7 +18,7 @@ public class Main {
 	    GroupDao groupDao = new GroupDao();
 	    StudentDao studentDao = new StudentDao();
 	    new SQLTablesCreator().createTables();
-	    new TestDataGenerator().generateTestData(courseDao, groupDao, studentDao);
+	    new DataGenerator().generateTestData(courseDao, groupDao, studentDao);
 	    new ConsoleMenu().show(courseDao, groupDao, studentDao);
 	} catch (IllegalArgumentException | IOException | SQLException e) {
 	    System.err.println(e.getMessage());

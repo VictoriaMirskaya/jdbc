@@ -5,13 +5,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import ua.com.foxminded.db.SQLTablesCreator;
+import ua.com.foxminded.db.init.CourseNames;
+import ua.com.foxminded.db.init.FirstNames;
+import ua.com.foxminded.db.init.GroupNames;
+import ua.com.foxminded.db.init.LastNames;
 import ua.com.foxminded.domain.Course;
 import ua.com.foxminded.domain.Group;
 import ua.com.foxminded.domain.Student;
-import ua.com.foxminded.servise.CourseNames;
-import ua.com.foxminded.servise.FirstNames;
-import ua.com.foxminded.servise.GroupNames;
-import ua.com.foxminded.servise.LastNames;
 
 public  class TestTools {
     

@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import ua.com.foxminded.dao.CourseDao;
 import ua.com.foxminded.dao.TestTools;
+import ua.com.foxminded.servise.SchoolService;
 import ua.com.foxminded.dao.GroupDao;
-import ua.com.foxminded.dao.SchoolService;
 import ua.com.foxminded.dao.StudentDao;
 
 class ConsoleMenuTest {

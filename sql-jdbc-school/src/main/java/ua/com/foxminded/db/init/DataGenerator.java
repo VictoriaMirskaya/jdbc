@@ -1,4 +1,4 @@
-package ua.com.foxminded.dao;
+package ua.com.foxminded.db.init;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -7,15 +7,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
+import ua.com.foxminded.dao.CourseDao;
+import ua.com.foxminded.dao.GroupDao;
+import ua.com.foxminded.dao.StudentDao;
 import ua.com.foxminded.domain.Course;
 import ua.com.foxminded.domain.Group;
 import ua.com.foxminded.domain.Student;
-import ua.com.foxminded.servise.CourseNames;
-import ua.com.foxminded.servise.FirstNames;
-import ua.com.foxminded.servise.GroupNames;
-import ua.com.foxminded.servise.LastNames;
 
-public class TestDataGenerator {
+public class DataGenerator {
     
     private final Random random = new Random();
       

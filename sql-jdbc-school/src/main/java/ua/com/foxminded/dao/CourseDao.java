@@ -9,8 +9,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import ua.com.foxminded.db.DBCPDataSource;
 import ua.com.foxminded.domain.Course;
-import ua.com.foxminded.servise.UserMessages;
+import ua.com.foxminded.ui.UserMessages;
 
 public class CourseDao implements Dao<Course> {
 

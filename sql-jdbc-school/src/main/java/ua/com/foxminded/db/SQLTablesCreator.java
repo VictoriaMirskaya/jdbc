@@ -1,4 +1,4 @@
-package ua.com.foxminded.dao;
+package ua.com.foxminded.db;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -7,7 +7,7 @@ import java.sql.Statement;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
-import ua.com.foxminded.servise.UserMessages;
+import ua.com.foxminded.ui.UserMessages;
 
 public class SQLTablesCreator {
 
