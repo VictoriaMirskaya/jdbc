@@ -6,7 +6,7 @@ import ua.com.foxminded.dao.CourseDao;
 import ua.com.foxminded.dao.GroupDao;
 import ua.com.foxminded.dao.StudentDao;
 import ua.com.foxminded.db.SQLTablesCreator;
-import ua.com.foxminded.db.init.DataGenerator;
+import ua.com.foxminded.init.DataGenerator;
 import ua.com.foxminded.ui.ConsoleMenu;
 import ua.com.foxminded.ui.UserMessages;
 

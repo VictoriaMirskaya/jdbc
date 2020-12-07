@@ -1,4 +1,4 @@
-package ua.com.foxminded.db.init;
+package ua.com.foxminded.init;
 
 public enum GroupNames {
 

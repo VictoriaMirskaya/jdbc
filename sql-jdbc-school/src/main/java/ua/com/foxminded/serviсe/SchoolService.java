@@ -1,4 +1,4 @@
-package ua.com.foxminded.servise;
+package ua.com.foxminded.serviсe;
 
 import java.io.IOException;
 import java.sql.SQLException;

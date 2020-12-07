@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ua.com.foxminded.domain.Course;
+import ua.com.foxminded.utils.TestTools;
 
 class CourseDaoTest {
     

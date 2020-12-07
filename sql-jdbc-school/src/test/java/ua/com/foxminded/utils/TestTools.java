@@ -1,4 +1,4 @@
-package ua.com.foxminded.dao;
+package ua.com.foxminded.utils;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -6,14 +6,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ua.com.foxminded.dao.CourseDao;
+import ua.com.foxminded.dao.GroupDao;
+import ua.com.foxminded.dao.StudentDao;
 import ua.com.foxminded.db.SQLTablesCreator;
-import ua.com.foxminded.db.init.CourseNames;
-import ua.com.foxminded.db.init.FirstNames;
-import ua.com.foxminded.db.init.GroupNames;
-import ua.com.foxminded.db.init.LastNames;
 import ua.com.foxminded.domain.Course;
 import ua.com.foxminded.domain.Group;
 import ua.com.foxminded.domain.Student;
+import ua.com.foxminded.init.CourseNames;
+import ua.com.foxminded.init.FirstNames;
+import ua.com.foxminded.init.GroupNames;
+import ua.com.foxminded.init.LastNames;
 
 public  class TestTools {
     

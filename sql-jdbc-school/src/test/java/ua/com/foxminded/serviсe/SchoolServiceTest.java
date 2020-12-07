@@ -1,4 +1,4 @@
-package ua.com.foxminded.dao;
+package ua.com.foxminded.serviсe;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
@@ -6,9 +6,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import ua.com.foxminded.dao.CourseDao;
+import ua.com.foxminded.dao.GroupDao;
+import ua.com.foxminded.dao.StudentDao;
 import ua.com.foxminded.domain.Group;
 import ua.com.foxminded.domain.Student;
-import ua.com.foxminded.servise.SchoolService;
+import ua.com.foxminded.serviсe.SchoolService;
+import ua.com.foxminded.utils.TestTools;
 
 class SchoolServiceTest {
 
@@ -26,7 +31,7 @@ class SchoolServiceTest {
 
     @Test
     void findGroupsWhithLessOrEqualsStudentCount_ShouldThrowIOException_WhenInputIncorrectValue() {
-	assertThrows(IOException.class, () -> schoolService.findGroupsWhithLessOrEqualsStudentCount(groupDao, 5));
+	assertThrows(IllegalArgumentException.class, () -> schoolService.findGroupsWhithLessOrEqualsStudentCount(groupDao, 5));
     }
     
     @Test
@@ -41,7 +46,7 @@ class SchoolServiceTest {
     
     @Test
     void findStudentsRelatedToCourseWithGivenName_ShouldThrowIOException_WhenInputIncorrectValue() throws SQLException, IOException {	
-	assertThrows(IOException.class, () -> schoolService.findStudentsRelatedToCourseWithGivenName(courseDao, studentDao, "TestName"));
+	assertThrows(IllegalArgumentException.class, () -> schoolService.findStudentsRelatedToCourseWithGivenName(courseDao, studentDao, "TestName"));
     }
     
     @Test
@@ -62,7 +67,7 @@ class SchoolServiceTest {
     
     @Test
     void deleteStudentById_ShouldThrowIOException_WhenStudentNotFound() {
-	assertThrows(IOException.class, () -> schoolService.deleteStudentById(studentDao, 1000));
+	assertThrows(IllegalArgumentException.class, () -> schoolService.deleteStudentById(studentDao, 1000));
     }
     
     @Test
@@ -74,12 +79,12 @@ class SchoolServiceTest {
 
     @Test
     void addStudentToCourse_ShouldThrowIOException_WhenInputIncorrectCourseId() throws SQLException, IOException {
-	assertThrows(IOException.class, () -> schoolService.addStudentToCourse(courseDao, studentDao, 1, 100));
+	assertThrows(IllegalArgumentException.class, () -> schoolService.addStudentToCourse(courseDao, studentDao, 1, 100));
     }
     
     @Test
     void addStudentToCourse_ShouldThrowIOException_WhenInputIncorrectStudentId() throws SQLException, IOException {
-	assertThrows(IOException.class, () -> schoolService.addStudentToCourse(courseDao, studentDao, 5000, 1));
+	assertThrows(IllegalArgumentException.class, () -> schoolService.addStudentToCourse(courseDao, studentDao, 5000, 1));
     }
     
     @Test
@@ -90,12 +95,12 @@ class SchoolServiceTest {
  
     @Test
     void removeStudentFromCourse_ShouldThrowIOException_WhenInputIncorrectCourseId() throws SQLException, IOException {
-	assertThrows(IOException.class, () -> schoolService.removeStudentFromCourse(courseDao, studentDao, 1, 100));
+	assertThrows(IllegalArgumentException.class, () -> schoolService.removeStudentFromCourse(courseDao, studentDao, 1, 100));
     }
     
     @Test
     void removeStudentFromCourse_ShouldThrowIOException_WhenInputIncorrectStudentId() throws SQLException, IOException {
-	assertThrows(IOException.class, () -> schoolService.removeStudentFromCourse(courseDao, studentDao, 5000, 1));
+	assertThrows(IllegalArgumentException.class, () -> schoolService.removeStudentFromCourse(courseDao, studentDao, 5000, 1));
     } 
 	
     @Test
