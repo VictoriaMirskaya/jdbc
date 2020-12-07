@@ -6,7 +6,8 @@ import java.sql.SQLException;
 import java.util.Properties;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.io.Resources;
-import ua.com.foxminded.UserMessages;
+
+import ua.com.foxminded.servise.UserMessages;
 
 public class DBCPDataSource {
 

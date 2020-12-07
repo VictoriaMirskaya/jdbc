@@ -11,14 +11,14 @@ public class SchoolService {
 
     public List<Group> findGroupsWhithLessOrEqualsStudentCount(GroupDao groupDao, int count) throws SQLException, IOException {
 	if(count < 10 || count > 30) {
-	    throw new IOException("Enter correct value: from 10 to 30.");
+	    throw new IllegalArgumentException("Enter correct value: from 10 to 30.");
 	}
 	return groupDao.findGroupsWhithLessOrEqualsStudentCount(count);	
     }
     
     public List<Student> findStudentsRelatedToCourseWithGivenName(CourseDao courseDao, StudentDao studentDao, String courseName) throws SQLException, IOException {
 	if(courseDao.findByName(courseName) == null) {
-	    throw new IOException("There are no courses with a given name.");
+	    throw new IllegalArgumentException("There are no courses with a given name.");
 	}
 	return studentDao.findStudentsRelatedToCourseWithGivenName(courseName);	
     }
@@ -31,7 +31,7 @@ public class SchoolService {
     
     public boolean deleteStudentById(StudentDao studentDao, int studentId) throws SQLException, IOException {
 	if(studentDao.findById(studentId) == null) {
-	    throw new IOException("There are no student with a given student id.");
+	    throw new IllegalArgumentException("There are no student with a given student id.");
 	}
 	studentDao.deleteById(studentId);	
 	return true;
@@ -39,10 +39,10 @@ public class SchoolService {
     
     public boolean addStudentToCourse(CourseDao courseDao, StudentDao studentDao, int studentId, int courseId) throws SQLException, IOException {
 	if(courseDao.findById(courseId) == null) {
-	    throw new IOException("There are no courses with a given course id.");
+	    throw new IllegalArgumentException("There are no courses with a given course id.");
 	}
 	if(studentDao.findById(studentId) == null) {
-	    throw new IOException("There are no student with a given student id.");
+	    throw new IllegalArgumentException("There are no student with a given student id.");
 	}
 	studentDao.addStudentToCourse(studentId, courseId);
 	return true;
@@ -50,10 +50,10 @@ public class SchoolService {
     
     public boolean removeStudentFromCourse(CourseDao courseDao, StudentDao studentDao, int studentId, int courseId) throws SQLException, IOException {
 	if(courseDao.findById(courseId) == null) {
-	    throw new IOException("There are no courses with a given course id.");
+	    throw new IllegalArgumentException("There are no courses with a given course id.");
 	}
 	if(studentDao.findById(studentId) == null) {
-	    throw new IOException("There are no student with a given student id.");
+	    throw new IllegalArgumentException("There are no student with a given student id.");
 	}
 	studentDao.removeStudentFromCourse(studentId, courseId);
 	return true;

@@ -7,6 +7,7 @@ import ua.com.foxminded.dao.GroupDao;
 import ua.com.foxminded.dao.SQLTablesCreator;
 import ua.com.foxminded.dao.StudentDao;
 import ua.com.foxminded.dao.TestDataGenerator;
+import ua.com.foxminded.servise.UserMessages;
 import ua.com.foxminded.ui.ConsoleMenu;
 
 public class Main {
@@ -19,7 +20,7 @@ public class Main {
 	    new SQLTablesCreator().createTables();
 	    new TestDataGenerator().generateTestData(courseDao, groupDao, studentDao);
 	    new ConsoleMenu().show(courseDao, groupDao, studentDao);
-	} catch (IOException | SQLException e) {
+	} catch (IllegalArgumentException | IOException | SQLException e) {
 	    System.err.println(e.getMessage());
 	} catch (RuntimeException e) {
 	    System.err.println(UserMessages.SYSTEM_ERROR);

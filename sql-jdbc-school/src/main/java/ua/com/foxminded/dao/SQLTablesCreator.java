@@ -6,7 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.jdbc.ScriptRunner;
-import ua.com.foxminded.UserMessages;
+
+import ua.com.foxminded.servise.UserMessages;
 
 public class SQLTablesCreator {
 

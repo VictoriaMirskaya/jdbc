@@ -8,8 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import ua.com.foxminded.UserMessages;
+
 import ua.com.foxminded.domain.Course;
+import ua.com.foxminded.servise.UserMessages;
 
 public class CourseDao implements Dao<Course> {
 

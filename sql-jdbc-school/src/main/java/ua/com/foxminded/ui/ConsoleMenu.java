@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
-import ua.com.foxminded.UserMessages;
+
 import ua.com.foxminded.dao.CourseDao;
 import ua.com.foxminded.dao.GroupDao;
 import ua.com.foxminded.dao.SchoolService;
 import ua.com.foxminded.dao.StudentDao;
 import ua.com.foxminded.domain.Group;
 import ua.com.foxminded.domain.Student;
+import ua.com.foxminded.servise.UserMessages;
 
 public class ConsoleMenu {
 

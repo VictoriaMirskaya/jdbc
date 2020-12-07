@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import ua.com.foxminded.domain.Course;
-import ua.com.foxminded.domain.CourseNames;
-import ua.com.foxminded.domain.FirstNames;
 import ua.com.foxminded.domain.Group;
-import ua.com.foxminded.domain.GroupNames;
-import ua.com.foxminded.domain.LastNames;
 import ua.com.foxminded.domain.Student;
+import ua.com.foxminded.servise.CourseNames;
+import ua.com.foxminded.servise.FirstNames;
+import ua.com.foxminded.servise.GroupNames;
+import ua.com.foxminded.servise.LastNames;
 
 public  class TestTools {
     

@@ -8,8 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import ua.com.foxminded.UserMessages;
+
 import ua.com.foxminded.domain.Group;
+import ua.com.foxminded.servise.UserMessages;
 
 public class GroupDao implements Dao<Group> {
     
