@@ -10,7 +10,7 @@ import ua.com.foxminded.dao.GroupDao;
 import ua.com.foxminded.dao.StudentDao;
 import ua.com.foxminded.domain.Group;
 import ua.com.foxminded.domain.Student;
-import ua.com.foxminded.serviсe.SchoolService;
+import ua.com.foxminded.service.SchoolService;
 
 public class ConsoleMenu {
 
